@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>金融證照互動測驗系統｜投信投顧法規・金融市場常識・職業道德</title>
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <!-- Firebase SDK (Compat) -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -110,6 +114,45 @@
             <span>🎲</span>
             <span class="hidden xs:inline sm:inline">重抽50題</span>
           </button>
+
+          <!-- 會員登入 / 雲端同步按鈕與使用者選單 -->
+          <div id="authContainer" class="relative inline-flex items-center">
+            <!-- 未登入狀態按鈕 -->
+            <button id="googleLoginBtn" type="button" title="使用 Google 登入以跨手機與電腦同步錯題" class="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 shadow-xs transition">
+              <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
+              <span class="hidden sm:inline">Google 登入同步</span>
+              <span class="sm:hidden">登入</span>
+            </button>
+
+            <!-- 已登入狀態選單 -->
+            <div id="userProfileDropdown" class="hidden relative">
+              <button id="userProfileBtn" type="button" class="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-800 bg-white hover:bg-slate-50 border border-slate-300 rounded-lg px-2 py-1 shadow-xs transition">
+                <img id="userAvatarImg" src="" alt="avatar" class="w-5 h-5 rounded-full object-cover border border-slate-200" />
+                <span id="userNameSpan" class="max-w-[70px] sm:max-w-[90px] truncate">使用者</span>
+                <span id="syncDotIndicator" class="inline-block w-2 h-2 rounded-full bg-emerald-500" title="雲端已同步"></span>
+                <span class="text-slate-400 text-[10px]">▼</span>
+              </button>
+              <div id="userProfileMenu" class="hidden absolute right-0 mt-1.5 w-60 bg-white border border-slate-200 rounded-xl shadow-xl z-50 p-2.5 space-y-2 text-xs">
+                <div class="px-2 py-1.5 border-b border-slate-100">
+                  <p id="userMenuName" class="font-bold text-slate-900 truncate"></p>
+                  <p id="userMenuEmail" class="text-slate-500 truncate text-[11px]"></p>
+                  <p id="cloudSyncStatusText" class="mt-1 inline-flex items-center gap-1 text-[11px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full font-medium">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> 雲端已同步 ✓
+                  </p>
+                </div>
+                <div class="px-2 py-1 flex items-center justify-between text-slate-600">
+                  <span>雲端錯題紀錄</span>
+                  <span id="userMenuWrongCount" class="font-bold text-rose-600">0 題</span>
+                </div>
+                <button id="manualSyncBtn" type="button" class="w-full text-left px-2 py-1.5 rounded-lg hover:bg-slate-100 text-slate-700 font-medium flex items-center gap-1.5 transition">
+                  <span>🔄</span> 立即同步至雲端
+                </button>
+                <button id="googleLogoutBtn" type="button" class="w-full text-left px-2 py-1.5 rounded-lg hover:bg-rose-50 text-rose-600 font-medium flex items-center gap-1.5 border-t border-slate-100 transition">
+                  <span>🚪</span> 登出 Google 帳號
+                </button>
+              </div>
+            </div>
+          </div>
 
           <button id="toggleHeaderBtn" type="button" aria-expanded="true" class="inline-flex items-center gap-1 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-300 rounded-lg px-2.5 py-1.5 transition">
             <span id="toggleHeaderIcon">▲</span>
@@ -292,10 +335,22 @@
         <button id="closeWrongModalBtn" type="button" class="text-slate-400 hover:text-slate-600 text-sm font-bold px-2 py-1">✕</button>
       </div>
 
-      <div class="bg-slate-50 rounded-xl p-3.5 border border-slate-200/80 text-xs text-slate-600 space-y-1.5">
-        <p>• <strong>自動歸檔：</strong>測驗中任何答錯的題目，系統會自動存入瀏覽器錯題資料庫（目前已存 <strong id="modalWrongCount" class="text-rose-600">0</strong> 題）。</p>
+      <div class="bg-slate-50 rounded-xl p-3.5 border border-slate-200/80 text-xs text-slate-600 space-y-2">
+        <div id="modalCloudSyncBanner" class="p-2.5 rounded-lg bg-white border border-slate-200 flex flex-wrap items-center justify-between gap-2">
+          <div class="flex items-center gap-2">
+            <span class="text-base">☁️</span>
+            <div>
+              <p id="modalCloudSyncTitle" class="font-bold text-slate-800">雲端同步狀態：訪客模式</p>
+              <p id="modalCloudSyncDesc" class="text-[11px] text-slate-500">錯題僅儲存於此瀏覽器，登入 Google 即可跨裝置自動同步。</p>
+            </div>
+          </div>
+          <button id="modalLoginPromptBtn" type="button" class="text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-lg px-2.5 py-1 transition">
+            登入 Google 啟用同步
+          </button>
+        </div>
+        <p>• <strong>自動歸檔：</strong>測驗中任何答錯的題目，系統會自動存入錯題資料庫（目前已存 <strong id="modalWrongCount" class="text-rose-600">0</strong> 題）。</p>
         <p>• <strong>錯題練習：</strong>點擊下方「立即練習我的錯題」或在頂部「測驗範圍」核取「📌 我的錯題資料庫」，即可針對弱點反覆練習。</p>
-        <p>• <strong>跨裝置備份：</strong>可匯出 JSON 檔案保存，或匯入先前備份的錯題紀錄。</p>
+        <p>• <strong>跨裝置備份：</strong>已登入帳號會自動跨手機／電腦雲端同步；亦可點擊下方匯出 JSON 檔案進行備份。</p>
       </div>
 
       <div class="flex flex-wrap items-center gap-2 pt-1">
@@ -457,6 +512,132 @@
       const confirmClearWrongBtn = document.getElementById('confirmClearWrongBtn');
       const wrongModalStatusMsg = document.getElementById('wrongModalStatusMsg');
 
+      // ==========================================
+      // Firebase 帳號與 Firestore 雲端同步
+      // ==========================================
+      const firebaseConfig = {
+        apiKey: "AIzaSyDNYCiQOgm7-8GfDGraY_k5iKx_a6QB4r8",
+        authDomain: "exam-web-42ba3.firebaseapp.com",
+        projectId: "exam-web-42ba3",
+        storageBucket: "exam-web-42ba3.firebasestorage.app",
+        messagingSenderId: "675222062576",
+        appId: "1:675222062576:web:168cbf09f8bd611ec88935",
+        measurementId: "G-ZFDTQQYS6M"
+      };
+
+      let fbAuth = null;
+      let fbDb = null;
+      let currentUser = null;
+      let cloudSyncDebounceTimer = null;
+
+      try {
+        if (typeof firebase !== 'undefined') {
+          firebase.initializeApp(firebaseConfig);
+          fbAuth = firebase.auth();
+          fbDb = firebase.firestore();
+        }
+      } catch (err) {
+        console.warn('Firebase 初始化提示：', err);
+      }
+
+      function updateSyncStatusUI(status, message) {
+        const syncDot = document.getElementById('syncDotIndicator');
+        const syncText = document.getElementById('cloudSyncStatusText');
+        const modalSyncTitle = document.getElementById('modalCloudSyncTitle');
+        const modalSyncDesc = document.getElementById('modalCloudSyncDesc');
+        const modalLoginBtn = document.getElementById('modalLoginPromptBtn');
+        const userMenuWrongCount = document.getElementById('userMenuWrongCount');
+
+        const wrongCount = getWrongQuestionIds().length;
+        if (userMenuWrongCount) userMenuWrongCount.textContent = wrongCount + ' 題';
+
+        if (status === 'synced') {
+          if (syncDot) { syncDot.className = 'inline-block w-2 h-2 rounded-full bg-emerald-500'; syncDot.title = '雲端已同步'; }
+          if (syncText) syncText.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> 雲端已同步 ✓';
+          if (modalSyncTitle) modalSyncTitle.textContent = '雲端同步狀態：已連線 (' + (currentUser ? (currentUser.displayName || currentUser.email) : '') + ')';
+          if (modalSyncDesc) modalSyncDesc.textContent = '錯題本已自動同步至雲端，任何裝置登入皆可即時存取。';
+          if (modalLoginBtn) modalLoginBtn.classList.add('hidden');
+        } else if (status === 'syncing') {
+          if (syncDot) { syncDot.className = 'inline-block w-2 h-2 rounded-full bg-amber-500 animate-ping'; syncDot.title = '同步中...'; }
+          if (syncText) syncText.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> 同步中...';
+          if (modalSyncTitle) modalSyncTitle.textContent = '雲端同步狀態：正在同步...';
+          if (modalSyncDesc) modalSyncDesc.textContent = '正在將最新錯題資料儲存至雲端...';
+        } else if (status === 'guest') {
+          if (modalSyncTitle) modalSyncTitle.textContent = '雲端同步狀態：訪客模式';
+          if (modalSyncDesc) modalSyncDesc.textContent = '錯題僅儲存於此瀏覽器，登入 Google 即可跨裝置自動同步。';
+          if (modalLoginBtn) modalLoginBtn.classList.remove('hidden');
+        } else if (status === 'error') {
+          if (syncDot) { syncDot.className = 'inline-block w-2 h-2 rounded-full bg-rose-500'; syncDot.title = '同步異常'; }
+          if (syncText) syncText.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> ' + (message || '同步失敗');
+          if (modalSyncTitle) modalSyncTitle.textContent = '雲端同步狀態：同步異常';
+          if (modalSyncDesc) modalSyncDesc.textContent = '原因：' + (message || '網路異常或權限尚未開放');
+        }
+      }
+
+      function pushWrongQuestionsToCloud() {
+        if (!currentUser || !fbDb) return;
+        updateSyncStatusUI('syncing');
+        clearTimeout(cloudSyncDebounceTimer);
+        cloudSyncDebounceTimer = setTimeout(async function () {
+          try {
+            await fbDb.collection('users').doc(currentUser.uid).set({
+              email: currentUser.email || '',
+              displayName: currentUser.displayName || '',
+              updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+              wrongQuestionsMap: wrongQuestionsMap,
+              totalWrong: Object.keys(wrongQuestionsMap).length
+            }, { merge: true });
+            updateSyncStatusUI('synced');
+          } catch (err) {
+            console.error('上傳雲端失敗:', err);
+            updateSyncStatusUI('error', '儲存失敗，請檢查網路或權限');
+          }
+        }, 800);
+      }
+
+      async function pullWrongQuestionsFromCloud(user) {
+        if (!user || !fbDb) return;
+        updateSyncStatusUI('syncing');
+        try {
+          const docRef = fbDb.collection('users').doc(user.uid);
+          const docSnap = await docRef.get();
+          if (docSnap.exists) {
+            const data = docSnap.data();
+            if (data && data.wrongQuestionsMap && typeof data.wrongQuestionsMap === 'object') {
+              // 智慧聯集合併：結合雲端紀錄與本機現有紀錄
+              Object.keys(data.wrongQuestionsMap).forEach(function (k) {
+                if (!wrongQuestionsMap[k]) {
+                  wrongQuestionsMap[k] = data.wrongQuestionsMap[k];
+                }
+              });
+              try {
+                window.localStorage.setItem(WRONG_STORAGE_KEY, JSON.stringify(wrongQuestionsMap));
+              } catch (e) {}
+              updateWrongCountBadges();
+              if (selectedScopes.has('WRONG')) {
+                buildQuizQuestions(true);
+              } else {
+                renderAllQuestions();
+              }
+            }
+          } else {
+            // 雲端無紀錄時，將現有本機錯題同步至雲端
+            await docRef.set({
+              email: user.email || '',
+              displayName: user.displayName || '',
+              createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+              updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+              wrongQuestionsMap: wrongQuestionsMap,
+              totalWrong: Object.keys(wrongQuestionsMap).length
+            });
+          }
+          updateSyncStatusUI('synced');
+        } catch (err) {
+          console.error('拉取雲端錯題失敗:', err);
+          updateSyncStatusUI('error', err.message || '連線錯誤');
+        }
+      }
+
       // 讀取與儲存錯題資料庫 (包裹 try/catch 確保沙盒安全)
       function loadWrongQuestionsFromStorage() {
         try {
@@ -480,6 +661,9 @@
           // 忽略沙盒環境 localStorage 寫入限制
         }
         updateWrongCountBadges();
+        if (currentUser) {
+          pushWrongQuestionsToCloud();
+        }
       }
 
       function getWrongQuestionIds() {
@@ -1267,6 +1451,13 @@
       confirmClearWrongBtn.addEventListener('click', function () {
         wrongQuestionsMap = {};
         saveWrongQuestionsToStorage();
+        if (currentUser && fbDb) {
+          fbDb.collection('users').doc(currentUser.uid).set({
+            wrongQuestionsMap: {},
+            totalWrong: 0,
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+          }, { merge: true }).catch(console.error);
+        }
         confirmClearWrongBtn.classList.add('hidden');
         wrongModalStatusMsg.textContent = '✓ 已清空全部錯題紀錄';
         if (selectedScopes.has('WRONG')) {
@@ -1275,6 +1466,101 @@
           renderAllQuestions();
         }
       });
+
+      // Firebase 登入/登出/同步事件綁定
+      const googleLoginBtn = document.getElementById('googleLoginBtn');
+      const userProfileDropdown = document.getElementById('userProfileDropdown');
+      const userProfileBtn = document.getElementById('userProfileBtn');
+      const userProfileMenu = document.getElementById('userProfileMenu');
+      const userAvatarImg = document.getElementById('userAvatarImg');
+      const userNameSpan = document.getElementById('userNameSpan');
+      const userMenuName = document.getElementById('userMenuName');
+      const userMenuEmail = document.getElementById('userMenuEmail');
+      const manualSyncBtn = document.getElementById('manualSyncBtn');
+      const googleLogoutBtn = document.getElementById('googleLogoutBtn');
+      const modalLoginPromptBtn = document.getElementById('modalLoginPromptBtn');
+
+      async function triggerGoogleLogin() {
+        if (!fbAuth) {
+          alert('Firebase 認證模組尚未載入，請稍候或重新整理頁面。');
+          return;
+        }
+        const provider = new firebase.auth.GoogleAuthProvider();
+        provider.setCustomParameters({ prompt: 'select_account' });
+        try {
+          await fbAuth.signInWithPopup(provider);
+        } catch (err) {
+          console.error('Google 登入失敗:', err);
+          if (err.code === 'auth/unauthorized-domain') {
+            alert('【Firebase 授權網域提示】\n目前網址 (' + window.location.hostname + ') 尚未加入 Firebase 授權網域。\n請前往 Firebase Console -> Authentication -> 設定 -> 已授權的網域 -> 新增：' + window.location.hostname);
+          } else if (err.code === 'auth/popup-blocked') {
+            alert('瀏覽器阻擋了彈出視窗，請允許彈出視窗後再次點擊登入。');
+          } else if (err.code !== 'auth/popup-closed-by-user') {
+            alert('登入失敗：' + (err.message || err.code));
+          }
+        }
+      }
+
+      if (googleLoginBtn) googleLoginBtn.addEventListener('click', triggerGoogleLogin);
+      if (modalLoginPromptBtn) modalLoginPromptBtn.addEventListener('click', function () {
+        if (wrongDbModal) wrongDbModal.classList.add('hidden');
+        triggerGoogleLogin();
+      });
+
+      if (userProfileBtn && userProfileMenu) {
+        userProfileBtn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          userProfileMenu.classList.toggle('hidden');
+        });
+        document.addEventListener('click', function (e) {
+          if (userProfileDropdown && !userProfileDropdown.contains(e.target)) {
+            userProfileMenu.classList.add('hidden');
+          }
+        });
+      }
+
+      if (manualSyncBtn) {
+        manualSyncBtn.addEventListener('click', function () {
+          if (currentUser) {
+            pushWrongQuestionsToCloud();
+            alert('✓ 已送出同步請求至雲端！');
+          }
+        });
+      }
+
+      if (googleLogoutBtn) {
+        googleLogoutBtn.addEventListener('click', async function () {
+          if (fbAuth) {
+            try {
+              await fbAuth.signOut();
+              if (userProfileMenu) userProfileMenu.classList.add('hidden');
+              alert('您已成功登出。');
+            } catch (err) {
+              console.error('登出異常:', err);
+            }
+          }
+        });
+      }
+
+      if (fbAuth) {
+        fbAuth.onAuthStateChanged(function (user) {
+          if (user) {
+            currentUser = user;
+            if (googleLoginBtn) googleLoginBtn.classList.add('hidden');
+            if (userProfileDropdown) userProfileDropdown.classList.remove('hidden');
+            if (userAvatarImg) userAvatarImg.src = user.photoURL || 'https://www.gravatar.com/avatar/?d=mp';
+            if (userNameSpan) userNameSpan.textContent = user.displayName || '已登入';
+            if (userMenuName) userMenuName.textContent = user.displayName || '使用者';
+            if (userMenuEmail) userMenuEmail.textContent = user.email || '';
+            pullWrongQuestionsFromCloud(user);
+          } else {
+            currentUser = null;
+            if (googleLoginBtn) googleLoginBtn.classList.remove('hidden');
+            if (userProfileDropdown) userProfileDropdown.classList.add('hidden');
+            updateSyncStatusUI('guest');
+          }
+        });
+      }
 
       // 啟動初始化
       loadWrongQuestionsFromStorage();
