@@ -940,6 +940,21 @@
         return '法規 ' + q.year + '年第' + q.session + '次 (原第' + getOriginalQuestionNumber(q) + '題)';
       }
 
+            // 題目內文負向/選錯題型關鍵字自動高亮 (標紅粗體)
+      function formatQuestionTitle(rawText) {
+        if (!rawText) return '';
+        const escaped = escapeHtml(rawText);
+        // 匹配常見負向否定詞（包含不得、錯誤、有誤、為非、不是等）
+        const keywords = '不正確|不包含|不包括|不適當|非屬|錯誤|有誤|為非|非為|不是|不得|不符|未符';
+        const pattern = new RegExp('(何者)(非)|(' + keywords + ')', 'g');
+        return escaped.replace(pattern, function (match, p1, p2, p3) {
+          if (p1 && p2) {
+            return p1 + '<strong class="text-rose-600 font-black">' + p2 + '</strong>';
+          }
+          return '<strong class="text-rose-600 font-black">' + (p3 || match) + '</strong>';
+        });
+      }
+
       function buildCardHtml(q, displayIndex) {
         const seqNum = typeof displayIndex === 'number' ? displayIndex + 1 : getOriginalQuestionNumber(q);
         const links = resolvePdfLinks(q);
@@ -1077,7 +1092,7 @@
 
             '<!-- 題目內文 -->' +
             '<h2 class="text-base sm:text-lg font-semibold text-slate-900 leading-relaxed mb-3.5">' +
-              escapeHtml(q.question) +
+              formatQuestionTitle(q.question) +
             '</h2>' +
 
             '<!-- ABCD 選項清單 -->' +
