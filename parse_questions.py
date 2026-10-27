@@ -435,7 +435,8 @@ def validate_questions(questions: list) -> dict:
 
 
 def main():
-    download_dir = "/working_dir/c_139da38595e8b89e/downloads"
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    download_dir = os.path.join(base_dir, "downloads")
     all_pdfs = discover_downloaded_pdfs(download_dir)
 
     question_pdfs = [
@@ -492,14 +493,9 @@ def main():
 
     report = validate_questions(all_questions)
 
-    output_paths = [
-        "/working_dir/c_139da38595e8b89e/questions.json",
-        "/working_dir/c_139da38595e8b89e/artifacts/file_generation/ttl=63d/output/questions.json",
-    ]
-    os.makedirs(os.path.dirname(output_paths[1]), exist_ok=True)
-    for out_path in output_paths:
-        with open(out_path, "w", encoding="utf-8") as f:
-            json.dump(all_questions, f, ensure_ascii=False, indent=2)
+    output_path = os.path.join(base_dir, "questions.json")
+    with open(output_path, "w", encoding="utf-8") as f:
+        json.dump(all_questions, f, ensure_ascii=False, indent=2)
 
     print("=== 解析與驗證報告 ===")
     for s in file_summaries:

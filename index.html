@@ -107,12 +107,12 @@
           <div id="compactScorePill" class="hidden items-center gap-1.5 bg-slate-100 px-2.5 py-1 rounded-full text-xs font-medium text-slate-700">
             <span><strong id="compactAnsweredCount" class="text-slate-900">0</strong>/<span id="compactTotalCount">50</span></span>
             <span class="text-slate-300">|</span>
-            <span><strong id="compactScoreDisplay" class="text-indigo-600">0</strong>分</span>
+            <span><strong id="compactScoreDisplay" class="text-indigo-600">0</strong><span id="compactScoreUnit">分</span></span>
           </div>
 
-          <button id="quickRedrawBtn" type="button" title="從目前勾選範圍重新隨機抽出 50 題" class="inline-flex items-center gap-1 text-xs font-semibold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-lg px-2.5 py-1.5 transition">
+          <button id="quickRedrawBtn" type="button" title="重新抽取或重設考題" class="inline-flex items-center gap-1 text-xs font-semibold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-lg px-2.5 py-1.5 transition">
             <span>🎲</span>
-            <span class="hidden xs:inline sm:inline">重抽50題</span>
+            <span id="quickRedrawBtnText" class="hidden xs:inline sm:inline">重抽50題</span>
           </button>
 
           <!-- 會員登入 / 雲端同步按鈕與使用者選單 -->
@@ -248,11 +248,20 @@
               </div>
             </div>
 
-            <!-- 隨機抽 50 題 vs 顯示全部題目 切換 -->
-            <label class="inline-flex items-center gap-1.5 bg-emerald-50/80 border border-emerald-200 px-2.5 py-1.5 rounded-lg cursor-pointer select-none text-xs font-semibold text-emerald-900">
-              <input id="random50Toggle" type="checkbox" checked class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 border-emerald-300" />
-              <span>隨機抽 50 題測驗 <span class="text-[11px] text-emerald-700 font-normal">(每題2分/70分及格)</span></span>
-            </label>
+            <!-- 出題模式切換：隨機抽 50 題 vs 全量出題（每題皆出） -->
+            <div class="inline-flex items-center p-1 bg-slate-100/90 border border-slate-200 rounded-xl text-xs font-semibold shadow-xs">
+              <label id="modeRandom50Label" title="每卷隨機抽出 50 題，每題 2 分，70 分及格" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg cursor-pointer select-none transition bg-white text-emerald-800 shadow-xs border border-emerald-200">
+                <input type="radio" name="drawModeOption" value="random50" id="drawModeRandom50" checked class="w-3.5 h-3.5 text-emerald-600 focus:ring-emerald-500 border-slate-300" />
+                <span>🎲 隨機抽 50 題 <span class="text-[11px] text-emerald-700 font-normal hidden sm:inline">(每題2分/70分及格)</span></span>
+              </label>
+
+              <label id="modeAllLabel" title="勾選的所有題庫每一題皆出，防止漏題；分數以作答正確比率 (%) 計算，70% 及格" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg cursor-pointer select-none transition text-slate-600 hover:text-slate-900 border border-transparent">
+                <input type="radio" name="drawModeOption" value="all" id="drawModeAll" class="w-3.5 h-3.5 text-indigo-600 focus:ring-indigo-500 border-slate-300" />
+                <span>📚 全量出題 <span class="text-[11px] text-indigo-600 font-bold">(每題皆出·正確比率%)</span></span>
+              </label>
+            </div>
+            <!-- 相容性隱藏 input 保留原有 id -->
+            <input id="random50Toggle" type="checkbox" checked class="hidden" aria-hidden="true" />
           </div>
 
           <!-- 關鍵字出題與搜尋框 + 錯題管理按鈕 -->
@@ -317,7 +326,7 @@
               <span class="text-slate-300">|</span>
               <span class="text-rose-600">錯 <strong id="wrongCount">0</strong></span>
               <span class="text-slate-300">|</span>
-              <span>得分 <strong id="scoreDisplay" class="text-indigo-600 text-sm">0</strong> 分</span>
+              <span><span id="scoreLabelText">得分</span> <strong id="scoreDisplay" class="text-indigo-600 text-sm">0</strong> <span id="scoreUnitText">分</span></span>
               <span id="passStatusBadge" class="px-1.5 py-0.5 rounded text-[11px] font-bold bg-slate-200 text-slate-600">70分及格</span>
             </div>
             <button id="resetSessionBtn" type="button" class="text-xs font-medium text-slate-600 hover:text-rose-600 bg-white hover:bg-rose-50 border border-slate-300 hover:border-rose-200 rounded-lg px-2.5 py-1 transition">
@@ -424,7 +433,7 @@
               <h2 class="text-base sm:text-lg font-bold text-slate-900 tracking-tight">系統版本控制與更新歷程 (Version Timeline)</h2>
               <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
                 <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                最新版本 v1.6.0
+                最新版本 v1.7.0
               </span>
             </div>
             <p class="text-xs text-slate-500 mt-1">完整記錄金融證照互動測驗系統之架構演進、題庫擴展、雲端技術與功能里程碑</p>
@@ -439,19 +448,50 @@
       <!-- 垂直時間軸主體 (左側垂直標記線) -->
       <div class="relative pl-6 sm:pl-8 border-l-2 border-indigo-200 ml-2 sm:ml-4 space-y-8">
 
-        <!-- Node 1: v1.6.0 -->
+        <!-- Node 1: v1.7.0 -->
         <div class="relative group">
           <div class="absolute -left-[31px] sm:-left-[39px] top-0.5 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center text-xs shadow-md ring-4 ring-indigo-100 font-bold">
-            🎯
+            📚
           </div>
           <div class="bg-indigo-50/50 border border-indigo-200/80 rounded-xl p-4 sm:p-5 transition hover:shadow-sm">
             <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
               <div class="flex items-center gap-2 flex-wrap">
-                <span class="px-2.5 py-0.5 rounded-md text-xs font-bold bg-indigo-600 text-white shadow-xs">v1.6.0</span>
+                <span class="px-2.5 py-0.5 rounded-md text-xs font-bold bg-indigo-600 text-white shadow-xs">v1.7.0</span>
                 <span class="text-xs font-bold text-slate-500">2026-10-27</span>
-                <span class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">當前版本 / 核心功能躍進</span>
+                <span class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">當前最新版本 / 刷題體驗重大躍進</span>
               </div>
               <span class="text-[11px] font-mono text-slate-400">commit: latest</span>
+            </div>
+            <h3 class="text-sm sm:text-base font-bold text-slate-900 mb-2">
+              全量出題模式（選取題庫每題皆出杜絕漏題）與作答正確比率 (%) 計分
+            </h3>
+            <div class="flex flex-wrap gap-1.5 mb-3">
+              <span class="px-2 py-0.5 rounded text-[11px] font-medium bg-white border border-indigo-200 text-indigo-700">📚 全量出題</span>
+              <span class="px-2 py-0.5 rounded text-[11px] font-medium bg-white border border-emerald-200 text-emerald-700">🎯 杜絕漏題</span>
+              <span class="px-2 py-0.5 rounded text-[11px] font-medium bg-white border border-indigo-200 text-indigo-700">📊 正確率(%)計分</span>
+              <span class="px-2 py-0.5 rounded text-[11px] font-medium bg-white border border-slate-200 text-slate-700">🎲 雙模切換</span>
+            </div>
+            <ul class="text-xs sm:text-sm text-slate-600 space-y-1.5 leading-relaxed list-disc list-inside">
+              <li><strong>全量出題模式（雙模切換）</strong>：新增「📚 全量出題」選項，勾選的題庫每題皆出（支援 50 至 1,820 題），徹底解決隨機抽選容易遺漏部分考題的困擾，讓每次複習都滴水不漏。</li>
+              <li><strong>作答正確比率計分法</strong>：在全量出題模式下，系統即時依「答對數 ÷ 已作答數 × 100%」精確計算作答正確率（%），即時反映真實實力，及格標準維持 70%。</li>
+              <li><strong>動態介面與單位同步</strong>：分數量表、頂部說明與收折迷你分數膠囊自動切換「得分 / 分」與「正確率 / %」，切換模式時無縫更新。</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Node 2: v1.6.0 -->
+        <div class="relative group">
+          <div class="absolute -left-[31px] sm:-left-[39px] top-0.5 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-slate-700 text-white flex items-center justify-center text-xs shadow-md ring-4 ring-slate-100 font-bold">
+            🎯
+          </div>
+          <div class="bg-white border border-slate-200 rounded-xl p-4 sm:p-5 transition hover:shadow-sm">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="px-2.5 py-0.5 rounded-md text-xs font-bold bg-slate-800 text-white">v1.6.0</span>
+                <span class="text-xs font-bold text-slate-500">2026-10-27</span>
+                <span class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200">功能里程碑</span>
+              </div>
+              <span class="text-[11px] font-mono text-slate-400">commit: 2973e14</span>
             </div>
             <h3 class="text-sm sm:text-base font-bold text-slate-900 mb-2">
               關鍵字智慧出題引擎・擴增反向題警示詞庫・常駐版本控制時間軸
@@ -694,7 +734,8 @@
 
       // 狀態變數
       let selectedScopes = new Set(['115-02']); // 預設勾選 115-02
-      let random50Enabled = true;               // 預設開啟隨機抽 50 題
+      let examDrawMode = 'random50';            // 'random50': 隨機抽50題 | 'all': 全量出題(每題皆出)
+      let random50Enabled = true;               // 相容隨機抽 50 題旗標
       let activeQuizQuestions = [];             // 目前抽出的測驗題目清單
       let activeKeywordExam = null;             // 目前關鍵字出題詞彙（null 為一般抽題模式）
       let searchQuery = '';
@@ -726,6 +767,13 @@
       const applyAndDrawBtn = document.getElementById('applyAndDrawBtn');
       const random50Toggle = document.getElementById('random50Toggle');
       const quickRedrawBtn = document.getElementById('quickRedrawBtn');
+      const quickRedrawBtnText = document.getElementById('quickRedrawBtnText');
+
+      // 出題模式 (雙模切換) DOM
+      const drawModeRandom50Radio = document.getElementById('drawModeRandom50');
+      const drawModeAllRadio = document.getElementById('drawModeAll');
+      const modeRandom50Label = document.getElementById('modeRandom50Label');
+      const modeAllLabel = document.getElementById('modeAllLabel');
 
       const toggleHeaderBtn = document.getElementById('toggleHeaderBtn');
       const toggleHeaderIcon = document.getElementById('toggleHeaderIcon');
@@ -736,6 +784,7 @@
       const compactAnsweredCount = document.getElementById('compactAnsweredCount');
       const compactTotalCount = document.getElementById('compactTotalCount');
       const compactScoreDisplay = document.getElementById('compactScoreDisplay');
+      const compactScoreUnit = document.getElementById('compactScoreUnit');
 
       const searchInput = document.getElementById('searchInput');
       const clearSearchBtn = document.getElementById('clearSearchBtn');
@@ -755,10 +804,39 @@
       const totalCountEl = document.getElementById('totalCount');
       const correctCountEl = document.getElementById('correctCount');
       const wrongCountEl = document.getElementById('wrongCount');
+      const scoreLabelText = document.getElementById('scoreLabelText');
       const scoreDisplayEl = document.getElementById('scoreDisplay');
+      const scoreUnitText = document.getElementById('scoreUnitText');
       const passStatusBadge = document.getElementById('passStatusBadge');
       const resetSessionBtn = document.getElementById('resetSessionBtn');
       const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+
+      // 更新出題模式切換鈕樣式與連動
+      function updateDrawModeUI() {
+        if (examDrawMode === 'all') {
+          if (drawModeAllRadio) drawModeAllRadio.checked = true;
+          if (modeAllLabel) {
+            modeAllLabel.className = 'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg cursor-pointer select-none transition bg-white text-indigo-800 shadow-xs border border-indigo-200';
+          }
+          if (modeRandom50Label) {
+            modeRandom50Label.className = 'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg cursor-pointer select-none transition text-slate-600 hover:text-slate-900 border border-transparent';
+          }
+          if (quickRedrawBtnText) quickRedrawBtnText.textContent = '重出全量題';
+          if (random50Toggle) random50Toggle.checked = false;
+          random50Enabled = false;
+        } else {
+          if (drawModeRandom50Radio) drawModeRandom50Radio.checked = true;
+          if (modeRandom50Label) {
+            modeRandom50Label.className = 'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg cursor-pointer select-none transition bg-white text-emerald-800 shadow-xs border border-emerald-200';
+          }
+          if (modeAllLabel) {
+            modeAllLabel.className = 'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg cursor-pointer select-none transition text-slate-600 hover:text-slate-900 border border-transparent';
+          }
+          if (quickRedrawBtnText) quickRedrawBtnText.textContent = '重抽50題';
+          if (random50Toggle) random50Toggle.checked = true;
+          random50Enabled = true;
+        }
+      }
 
       // 錯題庫 Modal 相關 DOM
       const wrongCountBadgeInMenu = document.getElementById('wrongCountBadgeInMenu');
@@ -1038,18 +1116,26 @@
           if (keywordActiveText) {
             keywordActiveText.textContent = '『' + activeKeywordExam + '』 (' + activeQuizQuestions.length + ' 題)';
           }
+          const scoringHint = (examDrawMode === 'all')
+            ? '全量出題 · 分數採作答正確比率 % 計算，70% 及格'
+            : '每題 2 分，70 分及格';
           currentScopeSummaryText.innerHTML =
             '關鍵字專題測驗：<strong class="text-indigo-700 font-bold">『' + escapeHtml(activeKeywordExam) + '』</strong> · 範圍：' +
-            getScopeDisplaySummary() + ' · 共 ' + activeQuizQuestions.length + ' 題（每題 2 分，70 分及格）';
+            getScopeDisplaySummary() + ' · 共 ' + activeQuizQuestions.length + ' 題（' + scoringHint + '）';
         } else {
           keywordActiveBadge.classList.add('hidden');
           const summaryLabel = getScopeDisplaySummary();
-          currentScopeSummaryText.textContent =
-            '目前範圍：' + summaryLabel + ' · 共 ' + activeQuizQuestions.length + ' 題（每題 2 分，滿分 100 分，70 分及格）';
+          if (examDrawMode === 'all') {
+            currentScopeSummaryText.textContent =
+              '目前範圍：' + summaryLabel + ' · 全量出題共 ' + activeQuizQuestions.length + ' 題（每題皆出不漏題 · 分數採作答正確比率 % 計算，70% 及格）';
+          } else {
+            currentScopeSummaryText.textContent =
+              '目前範圍：' + summaryLabel + ' · 隨機抽 ' + activeQuizQuestions.length + ' 題（每題 2 分，滿分 100 分，70 分及格）';
+          }
         }
       }
 
-      // 根據目前勾選範圍與「隨機抽 50 題」設定，重新產生本卷測驗題目
+      // 根據目前勾選範圍與出題模式（隨機抽 50 題 vs 全量出題），重新產生本卷測驗題目
       function buildQuizQuestions(clearAnswers) {
         if (clearAnswers) {
           Object.keys(pendingTimers).forEach(function (k) {
@@ -1064,23 +1150,27 @@
         activeKeywordExam = null; // 重抽題時退出關鍵字專題模式
 
         const pool = getCandidatePoolFromScopes();
-        if (random50Enabled) {
+        if (examDrawMode === 'all') {
+          // 全量出題模式：選取的題庫每題皆出，絕不漏題
+          activeQuizQuestions = pool.slice();
+        } else {
+          // 隨機抽 50 題模式：
           // 若只選單一法規梯次（剛好 50 題）且非強制亂數，或選多個範圍/共同科目題庫：
-          // 只要開啟「隨機抽 50 題」，從候選池隨機抽出最多 50 題
           if (pool.length > 50 || selectedScopes.size > 1) {
             activeQuizQuestions = shuffleArray(pool).slice(0, 50);
           } else {
             // 單一 50 題梯次時，若按下重抽也會洗牌順序
             activeQuizQuestions = clearAnswers ? shuffleArray(pool).slice(0, 50) : pool.slice(0, 50);
           }
-        } else {
-          activeQuizQuestions = pool.slice();
         }
 
         const summaryLabel = getScopeDisplaySummary();
-        const modeSuffix = random50Enabled ? '（抽 ' + activeQuizQuestions.length + ' 題）' : '（全部 ' + activeQuizQuestions.length + ' 題）';
+        const modeSuffix = (examDrawMode === 'all')
+          ? '（全量出題共 ' + activeQuizQuestions.length + ' 題）'
+          : '（抽 ' + activeQuizQuestions.length + ' 題）';
         scopeDropdownLabel.textContent = summaryLabel + ' ' + modeSuffix;
         updateKeywordExamUI();
+        updateDrawModeUI();
 
         renderAllQuestions();
       }
@@ -1177,25 +1267,60 @@
         correctCountEl.textContent = String(correct);
         wrongCountEl.textContent = String(wrong);
 
-        // 每題 2 分（若為 50 題標準測驗直接每題 2 分；若題數不同亦提供每題 2 分或百分換算）
-        const score = list.length <= 50 ? correct * 2 : Math.round((correct / list.length) * 100);
-        scoreDisplayEl.textContent = String(score);
+        if (examDrawMode === 'all') {
+          // 全量出題模式：依據使用者要求「分數就用作答的正確比率計算」，70% 及格
+          if (scoreLabelText) scoreLabelText.textContent = '正確率';
+          if (scoreUnitText) scoreUnitText.textContent = '%';
+          if (compactScoreUnit) compactScoreUnit.textContent = '%';
 
-        // 同步更新收折狀態下的迷你分數膠囊
-        compactAnsweredCount.textContent = String(answered);
-        compactTotalCount.textContent = String(list.length);
-        compactScoreDisplay.textContent = String(score);
+          const ratio = answered > 0 ? (correct / answered) * 100 : 0;
+          const displayScoreStr = answered > 0 ? (ratio % 1 === 0 ? ratio.toFixed(0) : ratio.toFixed(1)) : '0';
+          scoreDisplayEl.textContent = displayScoreStr;
 
-        // 及格 70 分狀態顯示
-        if (score >= 70) {
-          passStatusBadge.textContent = '🎉 及格 (≥70分)';
-          passStatusBadge.className = 'px-2 py-0.5 rounded text-[11px] font-bold bg-emerald-600 text-white';
-        } else if (answered > 0 && answered === list.length) {
-          passStatusBadge.textContent = '未達 70 分';
-          passStatusBadge.className = 'px-2 py-0.5 rounded text-[11px] font-bold bg-rose-100 text-rose-700';
+          // 同步更新收折狀態下的迷你分數膠囊
+          compactAnsweredCount.textContent = String(answered);
+          compactTotalCount.textContent = String(list.length);
+          compactScoreDisplay.textContent = displayScoreStr;
+
+          // 及格 70% 狀態判定
+          if (answered === 0) {
+            passStatusBadge.textContent = '70%及格';
+            passStatusBadge.className = 'px-1.5 py-0.5 rounded text-[11px] font-bold bg-slate-200 text-slate-600';
+          } else if (ratio >= 70) {
+            passStatusBadge.textContent = '🎉 及格 (≥70%)';
+            passStatusBadge.className = 'px-2 py-0.5 rounded text-[11px] font-bold bg-emerald-600 text-white';
+          } else if (answered === list.length) {
+            passStatusBadge.textContent = '未達 70% (' + displayScoreStr + '%)';
+            passStatusBadge.className = 'px-2 py-0.5 rounded text-[11px] font-bold bg-rose-100 text-rose-700';
+          } else {
+            passStatusBadge.textContent = '未達 70% (' + displayScoreStr + '%)';
+            passStatusBadge.className = 'px-1.5 py-0.5 rounded text-[11px] font-bold bg-amber-100 text-amber-800';
+          }
         } else {
-          passStatusBadge.textContent = '70分及格';
-          passStatusBadge.className = 'px-1.5 py-0.5 rounded text-[11px] font-bold bg-slate-200 text-slate-600';
+          // 隨機抽 50 題模式：每題 2 分，70 分及格
+          if (scoreLabelText) scoreLabelText.textContent = '得分';
+          if (scoreUnitText) scoreUnitText.textContent = '分';
+          if (compactScoreUnit) compactScoreUnit.textContent = '分';
+
+          const score = list.length <= 50 ? correct * 2 : Math.round((correct / list.length) * 100);
+          scoreDisplayEl.textContent = String(score);
+
+          // 同步更新收折狀態下的迷你分數膠囊
+          compactAnsweredCount.textContent = String(answered);
+          compactTotalCount.textContent = String(list.length);
+          compactScoreDisplay.textContent = String(score);
+
+          // 及格 70 分狀態顯示
+          if (score >= 70) {
+            passStatusBadge.textContent = '🎉 及格 (≥70分)';
+            passStatusBadge.className = 'px-2 py-0.5 rounded text-[11px] font-bold bg-emerald-600 text-white';
+          } else if (answered > 0 && answered === list.length) {
+            passStatusBadge.textContent = '未達 70 分';
+            passStatusBadge.className = 'px-2 py-0.5 rounded text-[11px] font-bold bg-rose-100 text-rose-700';
+          } else {
+            passStatusBadge.textContent = '70分及格';
+            passStatusBadge.className = 'px-1.5 py-0.5 rounded text-[11px] font-bold bg-slate-200 text-slate-600';
+          }
         }
       }
 
@@ -1589,14 +1714,35 @@
         window.scrollTo({ top: 0, behavior: 'smooth' });
       });
 
-      random50Toggle.addEventListener('change', function () {
-        random50Enabled = random50Toggle.checked;
-        buildQuizQuestions(false);
-      });
+      if (drawModeRandom50Radio) {
+        drawModeRandom50Radio.addEventListener('change', function () {
+          if (this.checked) {
+            examDrawMode = 'random50';
+            updateDrawModeUI();
+            buildQuizQuestions(false);
+          }
+        });
+      }
+
+      if (drawModeAllRadio) {
+        drawModeAllRadio.addEventListener('change', function () {
+          if (this.checked) {
+            examDrawMode = 'all';
+            updateDrawModeUI();
+            buildQuizQuestions(false);
+          }
+        });
+      }
+
+      if (random50Toggle) {
+        random50Toggle.addEventListener('change', function () {
+          examDrawMode = random50Toggle.checked ? 'random50' : 'all';
+          updateDrawModeUI();
+          buildQuizQuestions(false);
+        });
+      }
 
       quickRedrawBtn.addEventListener('click', function () {
-        random50Enabled = true;
-        random50Toggle.checked = true;
         buildQuizQuestions(true);
         window.scrollTo({ top: 0, behavior: 'smooth' });
       });
