@@ -255,11 +255,17 @@
             </label>
           </div>
 
-          <!-- 搜尋框 + 錯題管理按鈕 -->
-          <div class="flex items-center gap-2 ml-auto">
-            <div class="relative">
-              <input id="searchInput" type="search" placeholder="搜尋題目或選項關鍵字..." class="text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-lg pl-3 pr-7 py-1.5 w-40 sm:w-52 focus:outline-none focus:ring-2 focus:ring-emerald-500" />
-              <button id="clearSearchBtn" type="button" title="清除搜尋" class="hidden absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs">✕</button>
+          <!-- 關鍵字出題與搜尋框 + 錯題管理按鈕 -->
+          <div class="flex flex-wrap items-center gap-1.5 ml-auto">
+            <div class="flex items-center gap-1">
+              <div class="relative">
+                <input id="searchInput" type="search" placeholder="輸入關鍵字（如：開放式）..." class="text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-lg pl-3 pr-7 py-1.5 w-36 sm:w-48 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                <button id="clearSearchBtn" type="button" title="清除搜尋" class="hidden absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs">✕</button>
+              </div>
+              <button id="keywordExamBtn" type="button" title="依輸入的關鍵字，從目前勾選的測驗範圍中篩選題目進行專題測驗" class="inline-flex items-center gap-1 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 active:scale-95 border border-indigo-700 rounded-lg px-2.5 py-1.5 shadow-xs transition shrink-0">
+                <span>🎯</span>
+                <span>關鍵字出題</span>
+              </button>
             </div>
 
             <button id="openWrongModalBtn" type="button" class="inline-flex items-center gap-1 text-xs font-semibold text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200 rounded-lg px-2.5 py-1.5 transition">
@@ -383,11 +389,18 @@
   <!-- 狀態提示橫幅（收折頂部欄位時一併隱藏以節省手機空間） -->
   <div id="envBannerWrapper" class="max-w-5xl w-full mx-auto px-3 sm:px-4 pt-3">
     <div id="envBanner" class="flex flex-wrap items-center justify-between gap-2 bg-emerald-50/90 border border-emerald-200 text-emerald-900 px-3.5 py-2 rounded-xl text-xs">
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-2 flex-wrap">
         <span class="font-semibold">💡 測驗說明：</span>
         <span id="currentScopeSummaryText">目前範圍：投信投顧相關法規 115年第02次（每題 2 分，滿分 100 分，70 分及格）</span>
       </div>
-      <span id="currentPdfModeBadge" class="inline-flex items-center px-2 py-0.5 rounded bg-white text-emerald-800 border border-emerald-200 font-medium"></span>
+      <div class="flex items-center gap-2">
+        <span id="keywordActiveBadge" class="hidden inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-indigo-600 text-white font-bold text-xs shadow-xs">
+          <span>🎯 關鍵字出題：</span>
+          <span id="keywordActiveText">開放式 (共5題)</span>
+          <button id="exitKeywordExamBtn" type="button" title="離開關鍵字出題，返回一般抽題" class="ml-1 px-1 rounded hover:bg-indigo-700 text-white font-bold transition">✕</button>
+        </span>
+        <span id="currentPdfModeBadge" class="inline-flex items-center px-2 py-0.5 rounded bg-white text-emerald-800 border border-emerald-200 font-medium"></span>
+      </div>
     </div>
   </div>
 
@@ -396,13 +409,257 @@
     <div id="questionsContainer" class="space-y-4"></div>
   </main>
 
+  <!-- 系統版本控制與更新歷程視覺化時間軸 (常駐詳細版本) -->
+  <section id="versionTimelineSection" class="max-w-5xl w-full mx-auto px-3 sm:px-4 py-8 mb-4">
+    <div class="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-5 sm:p-8 space-y-6">
+      
+      <!-- 頂部標題與目前版本資訊列 -->
+      <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-5">
+        <div class="flex items-center gap-3">
+          <span class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 text-white shadow-md text-xl shrink-0">
+            🚀
+          </span>
+          <div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <h2 class="text-base sm:text-lg font-bold text-slate-900 tracking-tight">系統版本控制與更新歷程 (Version Timeline)</h2>
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                最新版本 v1.6.0
+              </span>
+            </div>
+            <p class="text-xs text-slate-500 mt-1">完整記錄金融證照互動測驗系統之架構演進、題庫擴展、雲端技術與功能里程碑</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 text-xs flex-wrap">
+          <span class="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-600 font-medium">Git 主分支：<code class="font-mono text-slate-800 font-bold">main</code></span>
+          <span class="px-2.5 py-1 rounded-lg bg-indigo-50 text-indigo-700 font-medium">題庫總量：<strong class="font-bold">1,820 題</strong></span>
+        </div>
+      </div>
+
+      <!-- 垂直時間軸主體 (左側垂直標記線) -->
+      <div class="relative pl-6 sm:pl-8 border-l-2 border-indigo-200 ml-2 sm:ml-4 space-y-8">
+
+        <!-- Node 1: v1.6.0 -->
+        <div class="relative group">
+          <div class="absolute -left-[31px] sm:-left-[39px] top-0.5 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center text-xs shadow-md ring-4 ring-indigo-100 font-bold">
+            🎯
+          </div>
+          <div class="bg-indigo-50/50 border border-indigo-200/80 rounded-xl p-4 sm:p-5 transition hover:shadow-sm">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="px-2.5 py-0.5 rounded-md text-xs font-bold bg-indigo-600 text-white shadow-xs">v1.6.0</span>
+                <span class="text-xs font-bold text-slate-500">2026-10-27</span>
+                <span class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">當前版本 / 核心功能躍進</span>
+              </div>
+              <span class="text-[11px] font-mono text-slate-400">commit: latest</span>
+            </div>
+            <h3 class="text-sm sm:text-base font-bold text-slate-900 mb-2">
+              關鍵字智慧出題引擎・擴增反向題警示詞庫・常駐版本控制時間軸
+            </h3>
+            <div class="flex flex-wrap gap-1.5 mb-3">
+              <span class="px-2 py-0.5 rounded text-[11px] font-medium bg-white border border-indigo-200 text-indigo-700">🔍 關鍵字出題</span>
+              <span class="px-2 py-0.5 rounded text-[11px] font-medium bg-white border border-rose-200 text-rose-700">🚨 反向題型強化</span>
+              <span class="px-2 py-0.5 rounded text-[11px] font-medium bg-white border border-slate-200 text-slate-700">📜 視覺化TimeLine</span>
+              <span class="px-2 py-0.5 rounded text-[11px] font-medium bg-white border border-indigo-200 text-indigo-700">🎯 專題集訓模式</span>
+            </div>
+            <ul class="text-xs sm:text-sm text-slate-600 space-y-1.5 leading-relaxed list-disc list-inside">
+              <li><strong>關鍵字出題引擎上線</strong>：輸入考點關鍵字（如「開放式」、「處分」、「除斥期間」），點選【關鍵字出題】，系統自目前勾選範圍或全體 1,820 題中檢索符合考題，專題精準集訓。</li>
+              <li><strong>反向題型詞庫擴增</strong>：擴充負向否定關鍵字紅字粗體標記，新增「不屬」、「不屬於」、「不當」、「不承保」、「不在」、「不可」等高頻陷阱詞，大幅降低審題失誤率。</li>
+              <li><strong>版本控制視覺化時間軸</strong>：頁面底部常駐詳細架構演進歷程，清晰呈現各版本里程碑、技術更新細節與 Git 演變記錄。</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Node 2: v1.5.0 -->
+        <div class="relative group">
+          <div class="absolute -left-[31px] sm:-left-[39px] top-0.5 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-rose-600 text-white flex items-center justify-center text-xs shadow-md ring-4 ring-rose-100 font-bold">
+            🚨
+          </div>
+          <div class="bg-white border border-slate-200 rounded-xl p-4 sm:p-5 transition hover:shadow-sm">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="px-2.5 py-0.5 rounded-md text-xs font-bold bg-slate-800 text-white">v1.5.0</span>
+                <span class="text-xs font-semibold text-slate-500">2026-10-24</span>
+                <span class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-rose-50 text-rose-700 border border-rose-200">UI/UX 審題優化</span>
+              </div>
+              <span class="text-[11px] font-mono text-slate-400">commit: 6d6713a</span>
+            </div>
+            <h3 class="text-sm sm:text-base font-bold text-slate-900 mb-2">
+              反向／選錯題型否定關鍵字自動標紅粗體
+            </h3>
+            <div class="flex flex-wrap gap-1.5 mb-3">
+              <span class="px-2 py-0.5 rounded text-[11px] font-medium bg-rose-50 text-rose-700 border border-rose-100">防呆審題機制</span>
+              <span class="px-2 py-0.5 rounded text-[11px] font-medium bg-slate-50 text-slate-600 border border-slate-200">正則動態渲染</span>
+            </div>
+            <ul class="text-xs sm:text-sm text-slate-600 space-y-1.5 leading-relaxed list-disc list-inside">
+              <li>針對題目中「何者非、不正確、不包含、不包括、錯誤、不得、有誤」等考題陷阱，利用正則表達式自動轉換為高對比度紅色黑體，顯著防範看錯題目之粗心失分。</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Node 3: v1.4.0 -->
+        <div class="relative group">
+          <div class="absolute -left-[31px] sm:-left-[39px] top-0.5 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-sky-600 text-white flex items-center justify-center text-xs shadow-md ring-4 ring-sky-100 font-bold">
+            ☁️
+          </div>
+          <div class="bg-white border border-slate-200 rounded-xl p-4 sm:p-5 transition hover:shadow-sm">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="px-2.5 py-0.5 rounded-md text-xs font-bold bg-slate-800 text-white">v1.4.0</span>
+                <span class="text-xs font-semibold text-slate-500">2026-10-24</span>
+                <span class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-sky-50 text-sky-700 border border-sky-200">雲端架構升級</span>
+              </div>
+              <span class="text-[11px] font-mono text-slate-400">commit: d5bebc6</span>
+            </div>
+            <h3 class="text-sm sm:text-base font-bold text-slate-900 mb-2">
+              Firebase Auth (Google 登入) 與 Cloud Firestore 跨裝置錯題雲端同步
+            </h3>
+            <div class="flex flex-wrap gap-1.5 mb-3">
+              <span class="px-2 py-0.5 rounded text-[11px] font-medium bg-sky-50 text-sky-700 border border-sky-100">Google OAuth 2.0</span>
+              <span class="px-2 py-0.5 rounded text-[11px] font-medium bg-sky-50 text-sky-700 border border-sky-100">Cloud Firestore</span>
+              <span class="px-2 py-0.5 rounded text-[11px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-100">智慧聯集合併</span>
+            </div>
+            <ul class="text-xs sm:text-sm text-slate-600 space-y-1.5 leading-relaxed list-disc list-inside">
+              <li>整合 Firebase 認證模組與 Google 彈出登入，實現手機、平板與電腦跨端錯題本即時同步。</li>
+              <li>加入 Debounce 800ms 防抖更新機制與 Smart Union 智慧聯集合併算法，兼顧網路效能與多裝置紀錄完整性。</li>
+              <li>訪客模式與雲端會員雙軌並行，離線支援 localStorage 儲存與 JSON 檔案匯出匯入。</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Node 4: v1.3.0 -->
+        <div class="relative group">
+          <div class="absolute -left-[31px] sm:-left-[39px] top-0.5 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs shadow-md ring-4 ring-emerald-100 font-bold">
+            📚
+          </div>
+          <div class="bg-white border border-slate-200 rounded-xl p-4 sm:p-5 transition hover:shadow-sm">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="px-2.5 py-0.5 rounded-md text-xs font-bold bg-slate-800 text-white">v1.3.0</span>
+                <span class="text-xs font-semibold text-slate-500">2026-10-23</span>
+                <span class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">題庫重大擴充</span>
+              </div>
+              <span class="text-[11px] font-mono text-slate-400">commit: 51a5292 (PR #1)</span>
+            </div>
+            <h3 class="text-sm sm:text-base font-bold text-slate-900 mb-2">
+              共同科目大擴充：納入金融市場常識與職業道德 113 題庫
+            </h3>
+            <div class="flex flex-wrap gap-1.5 mb-3">
+              <span class="px-2 py-0.5 rounded text-[11px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-100">金融常識 504 題</span>
+              <span class="px-2 py-0.5 rounded text-[11px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-100">職業道德 616 題</span>
+              <span class="px-2 py-0.5 rounded text-[11px] font-medium bg-slate-50 text-slate-600 border border-slate-200">總題數達 1,820 題</span>
+            </div>
+            <ul class="text-xs sm:text-sm text-slate-600 space-y-1.5 leading-relaxed list-disc list-inside">
+              <li>合併收錄「113年金融市場常識」504 題與「113年職業道德」616 題，與原 700 題法規整合成 1,820 題完整題庫。</li>
+              <li>支援數字選項（1/2/3/4）與字母選項（A/B/C/D）自動對齊解析，提供兩科一鍵全選與跨科目任意組合測驗。</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Node 5: v1.2.0 -->
+        <div class="relative group">
+          <div class="absolute -left-[31px] sm:-left-[39px] top-0.5 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-amber-600 text-white flex items-center justify-center text-xs shadow-md ring-4 ring-amber-100 font-bold">
+            🎛️
+          </div>
+          <div class="bg-white border border-slate-200 rounded-xl p-4 sm:p-5 transition hover:shadow-sm">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="px-2.5 py-0.5 rounded-md text-xs font-bold bg-slate-800 text-white">v1.2.0</span>
+                <span class="text-xs font-semibold text-slate-500">2026-10-22</span>
+                <span class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-amber-50 text-amber-700 border border-amber-200">作答體驗優化</span>
+              </div>
+              <span class="text-[11px] font-mono text-slate-400">commit: cb9b8ee</span>
+            </div>
+            <h3 class="text-sm sm:text-base font-bold text-slate-900 mb-2">
+              跨梯次多選抽題架構・三段選項灰階速記・頂部面板一鍵收折
+            </h3>
+            <div class="flex flex-wrap gap-1.5 mb-3">
+              <span class="px-2 py-0.5 rounded text-[11px] font-medium bg-amber-50 text-amber-700 border border-amber-100">14 梯次自由複選</span>
+              <span class="px-2 py-0.5 rounded text-[11px] font-medium bg-slate-50 text-slate-600 border border-slate-200">三段灰階速記</span>
+              <span class="px-2 py-0.5 rounded text-[11px] font-medium bg-slate-50 text-slate-600 border border-slate-200">手機版收折面板</span>
+            </div>
+            <ul class="text-xs sm:text-sm text-slate-600 space-y-1.5 leading-relaxed list-disc list-inside">
+              <li>升級測驗範圍選擇器為多選核取選單，支援 111–115 年 14 梯次法規隨意組合混合隨機抽 50 題。</li>
+              <li>創新研發「錯誤選項灰階速記」模式（淺灰、中灰、極淺灰三段切換），淡化錯誤選項視覺干擾，加速記憶正解。</li>
+              <li>手機版頂部控制欄支援一鍵收折與浮動迷你計分膠囊，大幅擴大螢幕可視題幹空間。</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Node 6: v1.1.0 -->
+        <div class="relative group">
+          <div class="absolute -left-[31px] sm:-left-[39px] top-0.5 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-purple-600 text-white flex items-center justify-center text-xs shadow-md ring-4 ring-purple-100 font-bold">
+            📌
+          </div>
+          <div class="bg-white border border-slate-200 rounded-xl p-4 sm:p-5 transition hover:shadow-sm">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="px-2.5 py-0.5 rounded-md text-xs font-bold bg-slate-800 text-white">v1.1.0</span>
+                <span class="text-xs font-semibold text-slate-500">2026-10-22</span>
+                <span class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-purple-50 text-purple-700 border border-purple-200">錯題系統上線</span>
+              </div>
+              <span class="text-[11px] font-mono text-slate-400">commit: cb9b8ee</span>
+            </div>
+            <h3 class="text-sm sm:text-base font-bold text-slate-900 mb-2">
+              智慧錯題歸檔資料庫・官方 PDF 試題答案雙軌查核連結
+            </h3>
+            <div class="flex flex-wrap gap-1.5 mb-3">
+              <span class="px-2 py-0.5 rounded text-[11px] font-medium bg-purple-50 text-purple-700 border border-purple-100">自動錯題庫</span>
+              <span class="px-2 py-0.5 rounded text-[11px] font-medium bg-slate-50 text-slate-600 border border-slate-200">雙軌 PDF 連結</span>
+              <span class="px-2 py-0.5 rounded text-[11px] font-medium bg-slate-50 text-slate-600 border border-slate-200">JSON 匯入匯出</span>
+            </div>
+            <ul class="text-xs sm:text-sm text-slate-600 space-y-1.5 leading-relaxed list-disc list-inside">
+              <li>答錯題目自動存入專屬錯題本，支援單獨勾選「我的錯題資料庫」專項強固弱點。</li>
+              <li>提供官方試題與標準答案 PDF 對照，智慧支援 Google Drive 雲端檢視與本地相對路徑雙軌切換。</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Node 7: v1.0.0 -->
+        <div class="relative group">
+          <div class="absolute -left-[31px] sm:-left-[39px] top-0.5 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-slate-600 text-white flex items-center justify-center text-xs shadow-md ring-4 ring-slate-100 font-bold">
+            🎉
+          </div>
+          <div class="bg-white border border-slate-200 rounded-xl p-4 sm:p-5 transition hover:shadow-sm">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="px-2.5 py-0.5 rounded-md text-xs font-bold bg-slate-800 text-white">v1.0.0</span>
+                <span class="text-xs font-semibold text-slate-500">2026-10-22</span>
+                <span class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-slate-100 text-slate-700 border border-slate-300">專案初始發布</span>
+              </div>
+              <span class="text-[11px] font-mono text-slate-400">commit: 8f134a9</span>
+            </div>
+            <h3 class="text-sm sm:text-base font-bold text-slate-900 mb-2">
+              金融證照互動測驗系統誕生・GitHub Pages CI/CD 自動部署
+            </h3>
+            <div class="flex flex-wrap gap-1.5 mb-3">
+              <span class="px-2 py-0.5 rounded text-[11px] font-medium bg-slate-50 text-slate-600 border border-slate-200">GitHub Actions</span>
+              <span class="px-2 py-0.5 rounded text-[11px] font-medium bg-slate-50 text-slate-600 border border-slate-200">50 題測驗引擎</span>
+              <span class="px-2 py-0.5 rounded text-[11px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-100">70 分及格判定</span>
+            </div>
+            <ul class="text-xs sm:text-sm text-slate-600 space-y-1.5 leading-relaxed list-disc list-inside">
+              <li>建構輕量高效 SPA 架構，採用 Tailwind CSS 與原生 JavaScript，無任何龐大框架負擔。</li>
+              <li>實作即時作答反饋機制：點選選項後藍色脈衝動態緩衝 1 秒，揭曉正解（綠色）與錯誤（紅色），每題 2 分、70 分及格。</li>
+              <li>配置 GitHub Pages 自動化發布工作流程，支援各類終端裝置隨開即測。</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
   <!-- 頁尾資訊與返回頂部 -->
   <footer class="bg-white border-t border-slate-200 py-5 mt-8">
     <div class="max-w-5xl mx-auto px-4 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-500">
       <div>
         <span>金融證照歷屆題庫互動測驗系統 · 投信投顧相關法規（700題）／金融市場常識（504題）／職業道德（616題）共 1,820 題</span>
       </div>
-      <div class="flex items-center gap-3">
+      <div class="flex items-center gap-2">
+        <a href="#versionTimelineSection" class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium transition inline-flex items-center gap-1">
+          <span>📜</span>
+          <span>版本歷程</span>
+        </a>
         <button id="scrollToTopBtn" type="button" class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium transition">
           ↑ 回到頂部
         </button>
@@ -439,6 +696,7 @@
       let selectedScopes = new Set(['115-02']); // 預設勾選 115-02
       let random50Enabled = true;               // 預設開啟隨機抽 50 題
       let activeQuizQuestions = [];             // 目前抽出的測驗題目清單
+      let activeKeywordExam = null;             // 目前關鍵字出題詞彙（null 為一般抽題模式）
       let searchQuery = '';
       let instantCheck = true;
       let grayscaleEnabled = false;
@@ -481,6 +739,10 @@
 
       const searchInput = document.getElementById('searchInput');
       const clearSearchBtn = document.getElementById('clearSearchBtn');
+      const keywordExamBtn = document.getElementById('keywordExamBtn');
+      const keywordActiveBadge = document.getElementById('keywordActiveBadge');
+      const keywordActiveText = document.getElementById('keywordActiveText');
+      const exitKeywordExamBtn = document.getElementById('exitKeywordExamBtn');
       const instantCheckToggle = document.getElementById('instantCheckToggle');
       const grayscaleToggle = document.getElementById('grayscaleToggle');
       const grayscaleLevelSelect = document.getElementById('grayscaleLevelSelect');
@@ -768,6 +1030,25 @@
         return copy;
       }
 
+      // 更新關鍵字出題 UI 標籤與測驗橫幅
+      function updateKeywordExamUI() {
+        if (!keywordActiveBadge) return;
+        if (activeKeywordExam) {
+          keywordActiveBadge.classList.remove('hidden');
+          if (keywordActiveText) {
+            keywordActiveText.textContent = '『' + activeKeywordExam + '』 (' + activeQuizQuestions.length + ' 題)';
+          }
+          currentScopeSummaryText.innerHTML =
+            '關鍵字專題測驗：<strong class="text-indigo-700 font-bold">『' + escapeHtml(activeKeywordExam) + '』</strong> · 範圍：' +
+            getScopeDisplaySummary() + ' · 共 ' + activeQuizQuestions.length + ' 題（每題 2 分，70 分及格）';
+        } else {
+          keywordActiveBadge.classList.add('hidden');
+          const summaryLabel = getScopeDisplaySummary();
+          currentScopeSummaryText.textContent =
+            '目前範圍：' + summaryLabel + ' · 共 ' + activeQuizQuestions.length + ' 題（每題 2 分，滿分 100 分，70 分及格）';
+        }
+      }
+
       // 根據目前勾選範圍與「隨機抽 50 題」設定，重新產生本卷測驗題目
       function buildQuizQuestions(clearAnswers) {
         if (clearAnswers) {
@@ -779,6 +1060,8 @@
             delete userAnswers[k];
           });
         }
+
+        activeKeywordExam = null; // 重抽題時退出關鍵字專題模式
 
         const pool = getCandidatePoolFromScopes();
         if (random50Enabled) {
@@ -797,8 +1080,7 @@
         const summaryLabel = getScopeDisplaySummary();
         const modeSuffix = random50Enabled ? '（抽 ' + activeQuizQuestions.length + ' 題）' : '（全部 ' + activeQuizQuestions.length + ' 題）';
         scopeDropdownLabel.textContent = summaryLabel + ' ' + modeSuffix;
-        currentScopeSummaryText.textContent =
-          '目前範圍：' + summaryLabel + ' · 共 ' + activeQuizQuestions.length + ' 題（每題 2 分，滿分 100 分，70 分及格）';
+        updateKeywordExamUI();
 
         renderAllQuestions();
       }
@@ -940,12 +1222,12 @@
         return '法規 ' + q.year + '年第' + q.session + '次 (原第' + getOriginalQuestionNumber(q) + '題)';
       }
 
-            // 題目內文負向/選錯題型關鍵字自動高亮 (標紅粗體)
+      // 題目內文負向/選錯題型關鍵字自動高亮 (標紅粗體)
       function formatQuestionTitle(rawText) {
         if (!rawText) return '';
         const escaped = escapeHtml(rawText);
-        // 匹配常見負向否定詞（包含不得、錯誤、有誤、為非、不是等）
-        const keywords = '不正確|不包含|不包括|不適當|非屬|錯誤|有誤|為非|非為|不是|不得|不符|未符';
+        // 匹配常見負向否定詞（包含何者非、不正確、不包含、不包括、不適當、不屬於、不承保、不屬、不當、不在、不可、非屬、錯誤、有誤、為非、非為、不是、不得、不符、未符等）
+        const keywords = '不正確|不包含|不包括|不適當|不屬於|不承保|不屬|不當|不在|不可|非屬|錯誤|有誤|為非|非為|不是|不得|不符|未符';
         const pattern = new RegExp('(何者)(非)|(' + keywords + ')', 'g');
         return escaped.replace(pattern, function (match, p1, p2, p3) {
           if (p1 && p2) {
@@ -1327,22 +1609,127 @@
         buildQuizQuestions(true);
       });
 
-      // 搜尋與篩選控制
+      // 執行關鍵字出題
+      function executeKeywordExam(rawKw) {
+        const kw = (rawKw || (searchInput ? searchInput.value : '')).trim();
+        if (!kw) {
+          alert('請輸入欲檢索出題之關鍵字（例如：開放式、處分、主管機關、保險等）！');
+          if (searchInput) searchInput.focus();
+          return;
+        }
+
+        const kwLower = kw.toLowerCase();
+        function matchQuestion(q) {
+          const inStem = (q.question || '').toLowerCase().includes(kwLower);
+          const inOpts = ['A', 'B', 'C', 'D'].some(function (k) {
+            return ((q.options && q.options[k]) || '').toLowerCase().includes(kwLower);
+          });
+          return inStem || inOpts;
+        }
+
+        // 1. 優先從目前勾選的測驗範圍中篩選考題
+        const candidatePool = getCandidatePoolFromScopes();
+        let matched = candidatePool.filter(matchQuestion);
+
+        if (matched.length === 0) {
+          // 若目前勾選範圍無符合題目，跨全題庫 1,820 題查詢
+          const allMatched = allQuestions.filter(matchQuestion);
+          if (allMatched.length > 0) {
+            const scopeDesc = getScopeDisplaySummary();
+            const shouldSwitch = confirm(
+              '【關鍵字出題提示】\n\n' +
+              '您目前勾選的測驗範圍（' + scopeDesc + '）中未搜出包含「' + kw + '」的考題。\n\n' +
+              '但系統在全題庫（1,820題）中找到了 ' + allMatched.length + ' 題符合的題目！\n\n' +
+              '是否直接切換為以全題庫的 ' + allMatched.length + ' 題進行「關鍵字專題出題測驗」？'
+            );
+            if (shouldSwitch) {
+              matched = allMatched;
+            } else {
+              return;
+            }
+          } else {
+            alert('在全題庫 1,820 題中，皆查無包含關鍵字「' + kw + '」的考題，請嘗試更換關鍵字！');
+            return;
+          }
+        }
+
+        // 清空既有作答紀錄與定時器
+        Object.keys(pendingTimers).forEach(function (k) {
+          clearTimeout(pendingTimers[k]);
+          delete pendingTimers[k];
+        });
+        Object.keys(userAnswers).forEach(function (k) {
+          delete userAnswers[k];
+        });
+
+        // 設置關鍵字出題模式
+        activeKeywordExam = kw;
+        activeQuizQuestions = matched;
+        searchQuery = ''; // 清除題卡即時過濾，確保所有符合關鍵字的題目皆完整顯示
+        if (clearSearchBtn) clearSearchBtn.classList.remove('hidden');
+
+        scopeDropdownLabel.textContent = '🎯 關鍵字出題：' + kw + '（共 ' + activeQuizQuestions.length + ' 題）';
+
+        updateKeywordExamUI();
+        renderAllQuestions();
+
+        // 平滑滾動至題目卡片區
+        const container = document.getElementById('questionsContainer');
+        if (container) {
+          container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+
+      // 退出關鍵字出題，返回常規測驗
+      function exitKeywordExam() {
+        activeKeywordExam = null;
+        if (searchInput) searchInput.value = '';
+        searchQuery = '';
+        if (clearSearchBtn) clearSearchBtn.classList.add('hidden');
+        buildQuizQuestions(true);
+      }
+
+      // 關鍵字出題與搜尋控制事件綁定
+      if (keywordExamBtn) {
+        keywordExamBtn.addEventListener('click', function () {
+          executeKeywordExam(searchInput.value);
+        });
+      }
+
+      if (exitKeywordExamBtn) {
+        exitKeywordExamBtn.addEventListener('click', exitKeywordExam);
+      }
+
+      searchInput.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          executeKeywordExam(searchInput.value);
+        }
+      });
+
       searchInput.addEventListener('input', function () {
-        searchQuery = searchInput.value.trim();
-        if (searchQuery) {
+        const val = searchInput.value.trim();
+        if (val) {
           clearSearchBtn.classList.remove('hidden');
         } else {
           clearSearchBtn.classList.add('hidden');
         }
-        renderAllQuestions();
+        // 若非關鍵字出題模式，保留題卡即時搜尋篩選
+        if (!activeKeywordExam) {
+          searchQuery = val;
+          renderAllQuestions();
+        }
       });
 
       clearSearchBtn.addEventListener('click', function () {
         searchInput.value = '';
         searchQuery = '';
         clearSearchBtn.classList.add('hidden');
-        renderAllQuestions();
+        if (activeKeywordExam) {
+          exitKeywordExam();
+        } else {
+          renderAllQuestions();
+        }
       });
 
       instantCheckToggle.addEventListener('change', function () {
