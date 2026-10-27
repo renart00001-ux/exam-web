@@ -433,7 +433,7 @@
               <h2 class="text-base sm:text-lg font-bold text-slate-900 tracking-tight">系統版本控制與更新歷程 (Version Timeline)</h2>
               <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
                 <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                最新版本 v1.7.0
+                最新版本 v1.7.1
               </span>
             </div>
             <p class="text-xs text-slate-500 mt-1">完整記錄金融證照互動測驗系統之架構演進、題庫擴展、雲端技術與功能里程碑</p>
@@ -442,23 +442,56 @@
         <div class="flex items-center gap-2 text-xs flex-wrap">
           <span class="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-600 font-medium">Git 主分支：<code class="font-mono text-slate-800 font-bold">main</code></span>
           <span class="px-2.5 py-1 rounded-lg bg-indigo-50 text-indigo-700 font-medium">題庫總量：<strong class="font-bold">1,820 題</strong></span>
+          <button id="timelineAuthToggleBtn" type="button" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-semibold border border-slate-200 transition cursor-pointer" title="詳細版控歷程僅供管理員 (renart.00001@gmail.com) 展開查看">
+            <span id="timelineLockIcon">🔒</span>
+            <span id="timelineToggleText">詳細歷程 (需管理員登入)</span>
+          </button>
         </div>
       </div>
 
-      <!-- 垂直時間軸主體 (左側垂直標記線) -->
-      <div class="relative pl-6 sm:pl-8 border-l-2 border-indigo-200 ml-2 sm:ml-4 space-y-8">
+      <!-- 垂直時間軸主體 (左側垂直標記線) - 預設折疊 hidden，僅限 renart.00001@gmail.com 登入後展開 -->
+      <div id="timelineNodesWrapper" class="hidden relative pl-6 sm:pl-8 border-l-2 border-indigo-200 ml-2 sm:ml-4 space-y-8">
 
-        <!-- Node 1: v1.7.0 -->
+        <!-- Node 1: v1.7.1 -->
         <div class="relative group">
           <div class="absolute -left-[31px] sm:-left-[39px] top-0.5 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center text-xs shadow-md ring-4 ring-indigo-100 font-bold">
-            📚
+            🔒
           </div>
           <div class="bg-indigo-50/50 border border-indigo-200/80 rounded-xl p-4 sm:p-5 transition hover:shadow-sm">
             <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
               <div class="flex items-center gap-2 flex-wrap">
-                <span class="px-2.5 py-0.5 rounded-md text-xs font-bold bg-indigo-600 text-white shadow-xs">v1.7.0</span>
+                <span class="px-2.5 py-0.5 rounded-md text-xs font-bold bg-indigo-600 text-white shadow-xs">v1.7.1</span>
                 <span class="text-xs font-bold text-slate-500">2026-10-27</span>
-                <span class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">當前最新版本 / 刷題體驗重大躍進</span>
+                <span class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">當前最新版本 / 權限與審題強化</span>
+              </div>
+              <span class="text-[11px] font-mono text-slate-400">commit: latest</span>
+            </div>
+            <h3 class="text-sm sm:text-base font-bold text-slate-900 mb-2">
+              管理員版控權限折疊控管・否定詞庫擴增「不正當」「不能」
+            </h3>
+            <div class="flex flex-wrap gap-1.5 mb-3">
+              <span class="px-2 py-0.5 rounded text-[11px] font-medium bg-white border border-indigo-200 text-indigo-700">🔒 版控歷程權限折疊</span>
+              <span class="px-2 py-0.5 rounded text-[11px] font-medium bg-white border border-emerald-200 text-emerald-700">👑 renart.00001 授權</span>
+              <span class="px-2 py-0.5 rounded text-[11px] font-medium bg-white border border-rose-200 text-rose-700">🚨 擴增「不正當」「不能」</span>
+            </div>
+            <ul class="text-xs sm:text-sm text-slate-600 space-y-1.5 leading-relaxed list-disc list-inside">
+              <li><strong>管理員版控歷程折疊保護</strong>：為維護一般使用者清爽之測驗介面，版本演進詳細節點預設收折隱藏，僅授權給管理員帳號（<code>renart.00001@gmail.com</code>）登入後自由展開與收折。</li>
+              <li><strong>反向題型詞庫再擴充</strong>：新增「不正當」、「不能」至題目否定關鍵字正則中（全題庫 8 題精確命中標紅加粗），進一步杜絕考生審題遺漏。</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Node 2: v1.7.0 -->
+        <div class="relative group">
+          <div class="absolute -left-[31px] sm:-left-[39px] top-0.5 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-slate-700 text-white flex items-center justify-center text-xs shadow-md ring-4 ring-slate-100 font-bold">
+            📚
+          </div>
+          <div class="bg-white border border-slate-200 rounded-xl p-4 sm:p-5 transition hover:shadow-sm">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="px-2.5 py-0.5 rounded-md text-xs font-bold bg-slate-800 text-white">v1.7.0</span>
+                <span class="text-xs font-bold text-slate-500">2026-10-27</span>
+                <span class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200">重要里程碑</span>
               </div>
               <span class="text-[11px] font-mono text-slate-400">commit: 002e0c1</span>
             </div>
@@ -1351,8 +1384,8 @@
       function formatQuestionTitle(rawText) {
         if (!rawText) return '';
         const escaped = escapeHtml(rawText);
-        // 匹配常見負向否定詞（包含何者非、不正確、不包含、不包括、不適當、不屬於、不承保、不屬、不當、不在、不可、非屬、錯誤、有誤、為非、非為、不是、不得、不符、未符等）
-        const keywords = '不正確|不包含|不包括|不適當|不屬於|不承保|不屬|不當|不在|不可|非屬|錯誤|有誤|為非|非為|不是|不得|不符|未符';
+        // 匹配常見負向否定詞（包含何者非、不正確、不包含、不包括、不適當、不正當、不屬於、不承保、不屬、不當、不能、不在、不可、非屬、錯誤、有誤、為非、非為、不是、不得、不符、未符等）
+        const keywords = '不正確|不包含|不包括|不適當|不正當|不屬於|不承保|不屬|不當|不能|不在|不可|非屬|錯誤|有誤|為非|非為|不是|不得|不符|未符';
         const pattern = new RegExp('(何者)(非)|(' + keywords + ')', 'g');
         return escaped.replace(pattern, function (match, p1, p2, p3) {
           if (p1 && p2) {
@@ -2090,6 +2123,78 @@
         });
       }
 
+      // ==========================================
+      // 版本控制時間軸：管理員權限控管與折疊控制
+      // 僅限 renart.00001@gmail.com 登入後可展開查閱
+      // ==========================================
+      const ADMIN_EMAIL = 'renart.00001@gmail.com';
+
+      function isCurrentUserAdmin() {
+        return Boolean(currentUser && (currentUser.email || '').toLowerCase() === ADMIN_EMAIL.toLowerCase());
+      }
+
+      function updateTimelineAuthUI() {
+        const toggleBtn = document.getElementById('timelineAuthToggleBtn');
+        const lockIcon = document.getElementById('timelineLockIcon');
+        const toggleText = document.getElementById('timelineToggleText');
+        const timelineWrapper = document.getElementById('timelineNodesWrapper');
+        if (!toggleBtn || !lockIcon || !toggleText) return;
+
+        const isAdmin = isCurrentUserAdmin();
+        if (isAdmin) {
+          toggleBtn.className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-bold border border-indigo-200 shadow-xs transition cursor-pointer';
+          toggleBtn.title = '管理員 (' + ADMIN_EMAIL + ') 已授權，點擊展開或收折詳細歷程';
+          lockIcon.textContent = '👑';
+          const isExpanded = timelineWrapper && !timelineWrapper.classList.contains('hidden');
+          toggleText.textContent = isExpanded ? '收折詳細歷程 ▲' : '展開詳細歷程 ▼';
+        } else {
+          toggleBtn.className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-semibold border border-slate-200 transition cursor-pointer';
+          toggleBtn.title = '詳細版控歷程僅供管理員 (' + ADMIN_EMAIL + ') 展開查看';
+          lockIcon.textContent = '🔒';
+          toggleText.textContent = '詳細歷程 (需管理員登入)';
+          if (timelineWrapper) {
+            timelineWrapper.classList.add('hidden'); // 若非管理員或登出狀態，強制收折保持簡要
+          }
+        }
+      }
+
+      const timelineAuthToggleBtn = document.getElementById('timelineAuthToggleBtn');
+      if (timelineAuthToggleBtn) {
+        timelineAuthToggleBtn.addEventListener('click', function () {
+          const isAdmin = isCurrentUserAdmin();
+          const timelineWrapper = document.getElementById('timelineNodesWrapper');
+          if (!isAdmin) {
+            if (!currentUser) {
+              const wantLogin = confirm(
+                '【管理員專屬資訊】\n\n' +
+                '此詳細架構演進與 Git 版控歷程為系統內部維護紀錄。\n' +
+                '系統限制僅有管理員帳號（' + ADMIN_EMAIL + '）登入後方可展開。\n\n' +
+                '是否立即進行 Google 登入？'
+              );
+              if (wantLogin) {
+                triggerGoogleLogin();
+              }
+            } else {
+              alert(
+                '【無存取權限】\n\n' +
+                '目前登入帳號為：' + (currentUser.email || '未知帳號') + '\n\n' +
+                '詳細版本歷程僅授權給管理員帳號：\n👉 ' + ADMIN_EMAIL + '\n\n' +
+                '請切換至管理員帳號後再行展開。'
+              );
+            }
+            return;
+          }
+
+          if (timelineWrapper) {
+            timelineWrapper.classList.toggle('hidden');
+            updateTimelineAuthUI();
+            if (!timelineWrapper.classList.contains('hidden')) {
+              timelineWrapper.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+          }
+        });
+      }
+
       if (fbAuth) {
         fbAuth.onAuthStateChanged(function (user) {
           if (user) {
@@ -2107,6 +2212,7 @@
             if (userProfileDropdown) userProfileDropdown.classList.add('hidden');
             updateSyncStatusUI('guest');
           }
+          updateTimelineAuthUI();
         });
       }
 
@@ -2115,6 +2221,7 @@
       initLawSessionCheckboxes();
       syncCheckboxesWithSelectedScopes();
       buildQuizQuestions(false);
+      updateTimelineAuthUI();
     })();
   </script>
 </body>
