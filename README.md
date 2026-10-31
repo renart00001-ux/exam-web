@@ -97,9 +97,22 @@ exam-web/
 │   ├── 金融市場常識-113.pdf   # 113 年金融市場常識題庫 (504題)
 │   └── 職業道德-113.pdf       # 113 年職業道德題庫 (616題)
 ├── .gitignore                 # Git 忽略設定
+├── batch_generate_700.py      # 法規 700 題提示與解析批次並行生成工具 (Gemini API)
 ├── deploy.sh                  # 一鍵建置儲存庫與推送腳本
 ├── index.html                 # 測驗主程式 (SPA, 內嵌 1,820 題、UI 與完整互動邏輯)
+├── law_700_extras.json        # 111-115 年法規 700 題提示與解析結構化資料
+├── merge_law_extras.py        # 提示與解析資料庫及單頁應用程式自動合併腳本
 ├── parse_questions.py         # 題庫 PDF 智慧剖析、對齊與 JSON 生成腳本
+├── PROMPT_STANDARD.md         # 考題「提示」與「解析」AI 標準生成規範與擴充手冊
 ├── questions.json             # 結構化題庫資料來源 (1,820 題完整資料)
 └── README.md                  # 專案說明與 Git 進程版本控制同步圖表
 ```
+
+---
+
+## 🤖 考題「提示」與「解析」AI 生成規範
+
+本系統所有題目之「考點提示」與「試題解析」皆嚴格遵守標準化 Prompt 原則生成（包含「1～2句常理暗示/破綻揪出」與「四選項各一句直擊法規破綻/立法目的」）。
+
+👉 **完整 Prompt 範本、典範案例與新考科擴充步驟請參閱**：[PROMPT_STANDARD.md](PROMPT_STANDARD.md)
+
