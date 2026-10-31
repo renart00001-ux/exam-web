@@ -36,23 +36,26 @@ def main():
         json.dump(questions, f, ensure_ascii=False, indent=2)
     print(f"Successfully saved {QUESTIONS_FILE}")
     
-    # 2. 同步更新 index.html 中的 EMBEDDED_QUESTIONS 常數
+    # 2. 同步更新 index.html 中的 EMBEDDED_QUESTIONS 常數 (使用精準字串切片避免 regex 轉義 \n 造成 JS 語法錯誤)
     with open(INDEX_FILE, "r", encoding="utf-8") as f:
         html = f.read()
     
     embedded_json_str = json.dumps(questions, ensure_ascii=False)
     
-    # 正規表達式替換 const EMBEDDED_QUESTIONS = [...];
-    pattern = r"const EMBEDDED_QUESTIONS = \[.*?\];"
-    new_assignment = f"const EMBEDDED_QUESTIONS = {embedded_json_str};"
-    
-    new_html, count = re.subn(pattern, new_assignment, html, count=1, flags=re.DOTALL)
-    if count == 0:
-        print("Warning: regex pattern for EMBEDDED_QUESTIONS did not match in index.html!")
+    start_marker = "const EMBEDDED_QUESTIONS = ["
+    idx = html.find(start_marker)
+    if idx != -1:
+        end_idx = html.find("];", idx)
+        if end_idx != -1:
+            end_idx += 2
+            new_html = html[:idx] + f"const EMBEDDED_QUESTIONS = {embedded_json_str};" + html[end_idx:]
+            with open(INDEX_FILE, "w", encoding="utf-8") as f:
+                f.write(new_html)
+            print("Successfully updated EMBEDDED_QUESTIONS in index.html!")
+        else:
+            print("Warning: could not find end of EMBEDDED_QUESTIONS in index.html!")
     else:
-        with open(INDEX_FILE, "w", encoding="utf-8") as f:
-            f.write(new_html)
-        print("Successfully updated EMBEDDED_QUESTIONS in index.html!")
+        print("Warning: could not find start of EMBEDDED_QUESTIONS in index.html!")
 
 if __name__ == "__main__":
     main()
