@@ -433,7 +433,7 @@
               <h2 class="text-base sm:text-lg font-bold text-slate-900 tracking-tight">系統版本控制與更新歷程 (Version Timeline)</h2>
               <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
                 <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                最新版本 v1.7.1
+                最新版本 v1.8.0
               </span>
             </div>
             <p class="text-xs text-slate-500 mt-1">完整記錄金融證照互動測驗系統之架構演進、題庫擴展、雲端技術與功能里程碑</p>
@@ -452,17 +452,49 @@
       <!-- 垂直時間軸主體 (左側垂直標記線) - 預設折疊 hidden，僅限 renart.00001@gmail.com 登入後展開 -->
       <div id="timelineNodesWrapper" class="hidden relative pl-6 sm:pl-8 border-l-2 border-indigo-200 ml-2 sm:ml-4 space-y-8">
 
-        <!-- Node 1: v1.7.1 -->
+        <!-- Node 1: v1.8.0 -->
         <div class="relative group">
           <div class="absolute -left-[31px] sm:-left-[39px] top-0.5 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center text-xs shadow-md ring-4 ring-indigo-100 font-bold">
-            🔒
+            💡
           </div>
           <div class="bg-indigo-50/50 border border-indigo-200/80 rounded-xl p-4 sm:p-5 transition hover:shadow-sm">
             <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
               <div class="flex items-center gap-2 flex-wrap">
-                <span class="px-2.5 py-0.5 rounded-md text-xs font-bold bg-indigo-600 text-white shadow-xs">v1.7.1</span>
+                <span class="px-2.5 py-0.5 rounded-md text-xs font-bold bg-indigo-600 text-white shadow-xs">v1.8.0</span>
+                <span class="text-xs font-bold text-slate-500">2026-11-01</span>
+                <span class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">當前最新版本 / 提示與詳解雙向擴充</span>
+              </div>
+              <span class="text-[11px] font-mono text-slate-400">commit: feat-v1.8.0</span>
+            </div>
+            <h3 class="text-sm sm:text-base font-bold text-slate-900 mb-2">
+              題目雙向擴充：「考點提示」(管理員專屬改寫) 與「試題詳解」(全民協同編輯與稽核軌跡)
+            </h3>
+            <div class="flex flex-wrap gap-1.5 mb-3">
+              <span class="px-2 py-0.5 rounded text-[11px] font-medium bg-white border border-amber-200 text-amber-800">💡 考點提示 (出題即見)</span>
+              <span class="px-2 py-0.5 rounded text-[11px] font-medium bg-white border border-indigo-200 text-indigo-700">👑 RENART 管理員改寫</span>
+              <span class="px-2 py-0.5 rounded text-[11px] font-medium bg-white border border-blue-200 text-blue-700">📘 試題詳解 (答題後展現)</span>
+              <span class="px-2 py-0.5 rounded text-[11px] font-medium bg-white border border-emerald-200 text-emerald-700">✍️ Last edited by 稽核軌跡</span>
+              <span class="px-2 py-0.5 rounded text-[11px] font-medium bg-white border border-slate-200 text-slate-700">🔄 本地+Firestore雙軌同步</span>
+            </div>
+            <ul class="text-xs sm:text-sm text-slate-600 space-y-1.5 leading-relaxed list-disc list-inside">
+              <li><strong>💡 考點提示 (Hint Engine)</strong>：每題皆新增提示欄位，題目載入立即清晰可視；僅限管理員帳號（<code>renart.00001@gmail.com</code>）具備編輯改寫權限，編輯完成點選「送出改寫」即時生效並永久保存。</li>
+              <li><strong>📘 試題詳解 (Community Explanation)</strong>：答題完畢（結算或即時作答）後動態展現詳解區塊，開放所有登入使用者共同協作編輯；點選「送出改寫」自動記錄「Last edited by [編輯者] at [時間]」完整稽核軌跡。</li>
+              <li><strong>🔄 離線快取與 Cloud Firestore 雲端雙向同步</strong>：提示與詳解資料採用 <code>localStorage</code> 離線持久化與 Cloud Firestore 雲端雙軌同步，即使離線也能秒開作答，連線時自動同步最新社群詳解。</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Node 2: v1.7.1 -->
+        <div class="relative group">
+          <div class="absolute -left-[31px] sm:-left-[39px] top-0.5 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-slate-700 text-white flex items-center justify-center text-xs shadow-md ring-4 ring-slate-100 font-bold">
+            🔒
+          </div>
+          <div class="bg-white border border-slate-200 rounded-xl p-4 sm:p-5 transition hover:shadow-sm">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="px-2.5 py-0.5 rounded-md text-xs font-bold bg-slate-800 text-white">v1.7.1</span>
                 <span class="text-xs font-bold text-slate-500">2026-10-27</span>
-                <span class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">當前最新版本 / 權限與審題強化</span>
+                <span class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-slate-100 text-slate-700 border border-slate-200">權限與審題強化</span>
               </div>
               <span class="text-[11px] font-mono text-slate-400">commit: 2cfa958</span>
             </div>
@@ -902,6 +934,99 @@
       let fbDb = null;
       let currentUser = null;
       let cloudSyncDebounceTimer = null;
+
+      // 管理員專屬信箱與身分檢核
+      const ADMIN_EMAIL = 'renart.00001@gmail.com';
+
+      function isCurrentUserAdmin() {
+        return Boolean(currentUser && (currentUser.email || '').toLowerCase() === ADMIN_EMAIL.toLowerCase());
+      }
+
+      // ==========================================
+      // 題目提示 (Hint) 與詳解 (Explanation) 持久化儲存與雲端同步
+      // ==========================================
+      const QUESTION_EXTRAS_STORAGE_KEY = 'exam_web_question_extras';
+      let questionExtrasMap = {};
+      const hintEditingState = {};
+      const explanationEditingState = {};
+
+      function loadQuestionExtrasFromStorage() {
+        try {
+          const raw = window.localStorage.getItem(QUESTION_EXTRAS_STORAGE_KEY);
+          if (raw) {
+            questionExtrasMap = JSON.parse(raw) || {};
+          }
+        } catch (e) {
+          questionExtrasMap = {};
+        }
+        allQuestions.forEach(function (q) {
+          const extra = questionExtrasMap[q.id];
+          if (extra) {
+            if (typeof extra.hint === 'string') q.hint = extra.hint;
+            if (typeof extra.explanation === 'string') q.explanation = extra.explanation;
+            if (typeof extra.explanation_last_edited_by === 'string') q.explanation_last_edited_by = extra.explanation_last_edited_by;
+            if (typeof extra.explanation_last_edited_at === 'string') q.explanation_last_edited_at = extra.explanation_last_edited_at;
+          }
+        });
+      }
+
+      function saveQuestionExtrasToStorage() {
+        try {
+          window.localStorage.setItem(QUESTION_EXTRAS_STORAGE_KEY, JSON.stringify(questionExtrasMap));
+        } catch (e) {}
+      }
+
+      async function pushQuestionExtraToCloud(qId) {
+        if (!fbDb) return;
+        const extra = questionExtrasMap[qId];
+        if (!extra) return;
+        try {
+          await fbDb.collection('question_extras').doc(String(qId)).set({
+            id: qId,
+            hint: extra.hint || '',
+            explanation: extra.explanation || '',
+            explanation_last_edited_by: extra.explanation_last_edited_by || '',
+            explanation_last_edited_at: extra.explanation_last_edited_at || '',
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+          }, { merge: true });
+        } catch (err) {
+          console.warn('雲端更新題目附加欄位提示 (已儲存於本機快取):', err);
+        }
+      }
+
+      async function pullQuestionExtrasFromCloud() {
+        if (!fbDb) return;
+        try {
+          const snapshot = await fbDb.collection('question_extras').get();
+          let hasChanges = false;
+          snapshot.forEach(function (doc) {
+            const data = doc.data();
+            const qId = parseInt(doc.id, 10);
+            if (!isNaN(qId) && data) {
+              questionExtrasMap[qId] = Object.assign({}, questionExtrasMap[qId], {
+                hint: data.hint !== undefined ? data.hint : (questionExtrasMap[qId] && questionExtrasMap[qId].hint) || '',
+                explanation: data.explanation !== undefined ? data.explanation : (questionExtrasMap[qId] && questionExtrasMap[qId].explanation) || '',
+                explanation_last_edited_by: data.explanation_last_edited_by !== undefined ? data.explanation_last_edited_by : (questionExtrasMap[qId] && questionExtrasMap[qId].explanation_last_edited_by) || '',
+                explanation_last_edited_at: data.explanation_last_edited_at !== undefined ? data.explanation_last_edited_at : (questionExtrasMap[qId] && questionExtrasMap[qId].explanation_last_edited_at) || ''
+              });
+              const q = allQuestions.find(function (item) { return item.id === qId; });
+              if (q) {
+                if (data.hint !== undefined) q.hint = data.hint;
+                if (data.explanation !== undefined) q.explanation = data.explanation;
+                if (data.explanation_last_edited_by !== undefined) q.explanation_last_edited_by = data.explanation_last_edited_by;
+                if (data.explanation_last_edited_at !== undefined) q.explanation_last_edited_at = data.explanation_last_edited_at;
+              }
+              hasChanges = true;
+            }
+          });
+          if (hasChanges) {
+            saveQuestionExtrasToStorage();
+            renderAllQuestions();
+          }
+        } catch (err) {
+          console.warn('拉取雲端題目附加欄位提示:', err);
+        }
+      }
 
       try {
         if (typeof firebase !== 'undefined') {
@@ -1503,6 +1628,113 @@
           ? '<button type="button" data-action="toggle-wrong-db" data-qid="' + q.id + '" title="點擊從錯題庫移除此題" class="inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-semibold bg-rose-100 hover:bg-rose-200 text-rose-800 border border-rose-300 transition">📌 已在錯題庫 ✕</button>'
           : '<button type="button" data-action="toggle-wrong-db" data-qid="' + q.id + '" title="手動將此題加入錯題庫" class="inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-700 border border-slate-200 transition">＋ 存錯題</button>';
 
+        const isAdmin = isCurrentUserAdmin();
+
+        // 1. 考點提示 HTML (題目出來即可見；僅限 ADMIN renart.00001@gmail.com 編輯改寫，按送出才會生效)
+        let hintHtml = '';
+        const isEditingHint = Boolean(hintEditingState[q.id]);
+        if (isEditingHint) {
+          hintHtml = (
+            '<div class="mb-3.5 p-3 rounded-lg bg-amber-50/90 border border-amber-300 shadow-xs">' +
+              '<div class="flex items-center justify-between gap-2 mb-1.5">' +
+                '<span class="inline-flex items-center gap-1 font-bold text-amber-900 text-xs sm:text-sm">' +
+                  '<span>💡</span> 編輯考點提示 (僅管理員可改寫)' +
+                '</span>' +
+              '</div>' +
+              '<textarea id="hint-input-' + q.id + '" rows="2" class="w-full text-xs sm:text-sm p-2 rounded border border-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white leading-relaxed text-slate-800" placeholder="請輸入本題關鍵考點、速記口訣或破題線索...">' + escapeHtml(q.hint || '') + '</textarea>' +
+              '<div class="flex items-center justify-end gap-2 mt-2">' +
+                '<button type="button" data-action="cancel-hint" data-qid="' + q.id + '" class="px-2.5 py-1 rounded text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-600 transition">取消</button>' +
+                '<button type="button" data-action="submit-hint" data-qid="' + q.id + '" class="px-3 py-1 rounded text-xs font-bold bg-amber-600 hover:bg-amber-700 text-white shadow-xs transition">送出改寫</button>' +
+              '</div>' +
+            '</div>'
+          );
+        } else if (q.hint && q.hint.trim()) {
+          hintHtml = (
+            '<div class="mb-3.5 p-3 rounded-lg bg-amber-50/70 border border-amber-200 text-amber-900 text-xs sm:text-sm">' +
+              '<div class="flex items-center justify-between gap-2 mb-1">' +
+                '<span class="inline-flex items-center gap-1 font-bold text-amber-800 text-xs sm:text-sm">' +
+                  '<span>💡</span> 考點提示' +
+                '</span>' +
+                (isAdmin
+                  ? '<button type="button" data-action="edit-hint" data-qid="' + q.id + '" class="inline-flex items-center gap-1 text-[11px] font-semibold text-amber-700 hover:text-amber-900 bg-amber-100 hover:bg-amber-200 px-2 py-0.5 rounded transition">✏️ 編輯提示</button>'
+                  : '') +
+              '</div>' +
+              '<div class="leading-relaxed whitespace-pre-line text-slate-800 font-medium">' +
+                escapeHtml(q.hint) +
+              '</div>' +
+            '</div>'
+          );
+        } else if (isAdmin) {
+          hintHtml = (
+            '<div class="mb-3">' +
+              '<button type="button" data-action="edit-hint" data-qid="' + q.id + '" class="inline-flex items-center gap-1 text-xs font-semibold text-amber-700 hover:text-amber-900 bg-amber-50 hover:bg-amber-100 border border-amber-200 border-dashed px-2.5 py-1 rounded-md transition">' +
+                '<span>💡</span> ＋ 新增提示 (管理員專屬)' +
+              '</button>' +
+            '</div>'
+          );
+        }
+
+        // 2. 試題詳解 HTML (該題答題完後出現；每個帳號皆可編輯，按送出改寫，並留存 Last edited by)
+        let explanationHtml = '';
+        const isAnswered = state && (state.status === 'settled' || !instantCheck);
+        if (isAnswered) {
+          const isEditingExplanation = Boolean(explanationEditingState[q.id]);
+          if (isEditingExplanation) {
+            explanationHtml = (
+              '<div class="mt-3.5 pt-3 border-t border-slate-100">' +
+                '<div class="p-3.5 rounded-xl bg-blue-50/80 border-2 border-blue-200">' +
+                  '<div class="flex items-center justify-between gap-2 mb-2">' +
+                    '<span class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-blue-900">' +
+                      '<span>📘</span> 編輯試題詳解／法規解析' +
+                    '</span>' +
+                    '<span class="text-[11px] text-blue-600">全體帳號皆可補充協作</span>' +
+                  '</div>' +
+                  '<textarea id="explanation-input-' + q.id + '" rows="3" class="w-full text-xs sm:text-sm p-2.5 rounded-lg border border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white leading-relaxed text-slate-800" placeholder="請輸入法規條號、題意辨析、常見陷阱或解題思維...">' + escapeHtml(q.explanation || '') + '</textarea>' +
+                  '<div class="flex flex-wrap items-center justify-between gap-2 mt-2 pt-1">' +
+                    '<span class="text-[11px] text-slate-500">' +
+                      '編輯者身分：<strong class="text-slate-700 font-semibold">' + (currentUser ? escapeHtml(currentUser.displayName || currentUser.email) : '訪客') + '</strong>' +
+                    '</span>' +
+                    '<div class="flex items-center gap-2">' +
+                      '<button type="button" data-action="cancel-explanation" data-qid="' + q.id + '" class="px-2.5 py-1 rounded text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-600 transition">取消</button>' +
+                      '<button type="button" data-action="submit-explanation" data-qid="' + q.id + '" class="px-3 py-1 rounded text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white shadow-xs transition">送出改寫</button>' +
+                    '</div>' +
+                  '</div>' +
+                '</div>' +
+              '</div>'
+            );
+          } else if (q.explanation && q.explanation.trim()) {
+            explanationHtml = (
+              '<div class="mt-3.5 pt-3 border-t border-slate-100">' +
+                '<div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200">' +
+                  '<div class="flex items-center justify-between gap-2 mb-2">' +
+                    '<span class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-slate-800">' +
+                      '<span>📘</span> 試題詳解' +
+                    '</span>' +
+                    '<button type="button" data-action="edit-explanation" data-qid="' + q.id + '" class="inline-flex items-center gap-1 text-[11px] font-semibold text-blue-700 hover:text-blue-900 bg-blue-50 hover:bg-blue-100 border border-blue-200 px-2.5 py-0.5 rounded transition">✏️ 編輯解釋</button>' +
+                  '</div>' +
+                  '<div class="text-xs sm:text-sm text-slate-700 leading-relaxed whitespace-pre-line mb-2">' +
+                    escapeHtml(q.explanation) +
+                  '</div>' +
+                  '<div class="text-[11px] text-slate-400 font-mono flex items-center justify-end gap-1 border-t border-slate-200/60 pt-1.5">' +
+                    '<span>Last edited by ' + escapeHtml(q.explanation_last_edited_by || '系統標準解答') + (q.explanation_last_edited_at ? ' at ' + escapeHtml(q.explanation_last_edited_at) : '') + '</span>' +
+                  '</div>' +
+                '</div>' +
+              '</div>'
+            );
+          } else {
+            explanationHtml = (
+              '<div class="mt-3.5 pt-3 border-t border-slate-100">' +
+                '<div class="p-3 rounded-xl bg-slate-50/60 border border-dashed border-slate-200 flex flex-wrap items-center justify-between gap-2">' +
+                  '<span class="text-xs text-slate-400">📘 本題目前尚無詳細解析說明</span>' +
+                  '<button type="button" data-action="edit-explanation" data-qid="' + q.id + '" class="inline-flex items-center gap-1 text-xs font-semibold text-blue-700 hover:text-blue-900 bg-white hover:bg-blue-50 border border-blue-200 px-2.5 py-1 rounded-md transition">' +
+                    '<span>＋</span> 撰寫詳解補充' +
+                  '</button>' +
+                '</div>' +
+              '</div>'
+            );
+          }
+        }
+
         return (
           '<article id="q-card-' + q.id + '" data-seq="' + seqNum + '" class="question-card bg-white rounded-xl border border-slate-200 shadow-sm p-4 sm:p-5">' +
             '<!-- 卡片頂部：題號標籤、科目梯次與右上角 PDF 查核 / 錯題庫按鈕 -->' +
@@ -1535,6 +1767,9 @@
               formatQuestionTitle(q.question) +
             '</h2>' +
 
+            '<!-- 考點提示 (題目出來即可見；僅限 ADMIN 編輯改寫) -->' +
+            hintHtml +
+
             '<!-- ABCD 選項清單 -->' +
             '<div class="space-y-2 mb-4">' +
               optionsHtml +
@@ -1550,6 +1785,9 @@
                 feedbackHtml +
               '</div>' +
             '</div>' +
+
+            '<!-- 試題詳解 (答題完後出現；全帳號可編輯改寫) -->' +
+            explanationHtml +
           '</article>'
         );
       }
@@ -1645,8 +1883,9 @@
         }, 1000);
       }
 
-      // 事件委派：處理題目卡片內的選項點擊與手動存/刪錯題
+      // 事件委派：處理題目卡片內的選項點擊、存/刪錯題、提示編輯改寫與詳解編輯改寫
       questionsContainer.addEventListener('click', function (e) {
+        // 1. 選項點擊
         const optTarget = e.target.closest('[data-action="select-option"]');
         if (optTarget) {
           const qId = parseInt(optTarget.getAttribute('data-qid'), 10);
@@ -1657,6 +1896,7 @@
           return;
         }
 
+        // 2. 手動存入/移除錯題庫
         const wrongTarget = e.target.closest('[data-action="toggle-wrong-db"]');
         if (wrongTarget) {
           const qId = parseInt(wrongTarget.getAttribute('data-qid'), 10);
@@ -1668,6 +1908,127 @@
             }
             renderSingleCard(qId);
           }
+          return;
+        }
+
+        // 3. 考點提示：進入編輯模式 (僅限 ADMIN renart.00001@gmail.com)
+        const editHintBtn = e.target.closest('[data-action="edit-hint"]');
+        if (editHintBtn) {
+          const qId = parseInt(editHintBtn.getAttribute('data-qid'), 10);
+          if (!isNaN(qId)) {
+            if (!isCurrentUserAdmin()) {
+              alert('【權限不足】\n\n「考點提示」欄位僅限管理員帳號（' + ADMIN_EMAIL + '）具備編輯改寫權限。');
+              return;
+            }
+            hintEditingState[qId] = true;
+            renderSingleCard(qId);
+            const input = document.getElementById('hint-input-' + qId);
+            if (input) input.focus();
+          }
+          return;
+        }
+
+        // 4. 考點提示：取消編輯
+        const cancelHintBtn = e.target.closest('[data-action="cancel-hint"]');
+        if (cancelHintBtn) {
+          const qId = parseInt(cancelHintBtn.getAttribute('data-qid'), 10);
+          if (!isNaN(qId)) {
+            delete hintEditingState[qId];
+            renderSingleCard(qId);
+          }
+          return;
+        }
+
+        // 5. 考點提示：送出改寫 (僅限 ADMIN renart.00001@gmail.com)
+        const submitHintBtn = e.target.closest('[data-action="submit-hint"]');
+        if (submitHintBtn) {
+          const qId = parseInt(submitHintBtn.getAttribute('data-qid'), 10);
+          if (!isNaN(qId)) {
+            if (!isCurrentUserAdmin()) {
+              alert('【權限不足】\n\n「考點提示」欄位僅限管理員帳號（' + ADMIN_EMAIL + '）具備編輯改寫權限。');
+              return;
+            }
+            const input = document.getElementById('hint-input-' + qId);
+            const newHint = input ? input.value.trim() : '';
+            const q = allQuestions.find(function (item) { return item.id === qId; });
+            if (q) {
+              q.hint = newHint;
+            }
+            if (!questionExtrasMap[qId]) questionExtrasMap[qId] = {};
+            questionExtrasMap[qId].hint = newHint;
+            saveQuestionExtrasToStorage();
+            pushQuestionExtraToCloud(qId);
+            delete hintEditingState[qId];
+            renderSingleCard(qId);
+          }
+          return;
+        }
+
+        // 6. 試題詳解：進入編輯模式 (全帳號皆可編輯；非登入者友善提醒)
+        const editExplBtn = e.target.closest('[data-action="edit-explanation"]');
+        if (editExplBtn) {
+          const qId = parseInt(editExplBtn.getAttribute('data-qid'), 10);
+          if (!isNaN(qId)) {
+            if (!currentUser) {
+              const wantLogin = confirm(
+                '【登入提醒】\n\n' +
+                '編輯試題詳解需要記錄您的帳號身分（Last edited by ...）。\n' +
+                '是否立即使用 Google 帳號登入？\n\n' +
+                '（點選「取消」仍可以訪客身分進行編輯改寫）'
+              );
+              if (wantLogin) {
+                triggerGoogleLogin();
+                return;
+              }
+            }
+            explanationEditingState[qId] = true;
+            renderSingleCard(qId);
+            const input = document.getElementById('explanation-input-' + qId);
+            if (input) input.focus();
+          }
+          return;
+        }
+
+        // 7. 試題詳解：取消編輯
+        const cancelExplBtn = e.target.closest('[data-action="cancel-explanation"]');
+        if (cancelExplBtn) {
+          const qId = parseInt(cancelExplBtn.getAttribute('data-qid'), 10);
+          if (!isNaN(qId)) {
+            delete explanationEditingState[qId];
+            renderSingleCard(qId);
+          }
+          return;
+        }
+
+        // 8. 試題詳解：送出改寫並留存 Last edited by
+        const submitExplBtn = e.target.closest('[data-action="submit-explanation"]');
+        if (submitExplBtn) {
+          const qId = parseInt(submitExplBtn.getAttribute('data-qid'), 10);
+          if (!isNaN(qId)) {
+            const input = document.getElementById('explanation-input-' + qId);
+            const newExpl = input ? input.value.trim() : '';
+            const editorName = currentUser ? (currentUser.displayName || currentUser.email) : '訪客';
+            const now = new Date();
+            const pad = function (n) { return n < 10 ? '0' + n : String(n); };
+            const dateStr = now.getFullYear() + '-' + pad(now.getMonth() + 1) + '-' + pad(now.getDate()) + ' ' + pad(now.getHours()) + ':' + pad(now.getMinutes());
+
+            const q = allQuestions.find(function (item) { return item.id === qId; });
+            if (q) {
+              q.explanation = newExpl;
+              q.explanation_last_edited_by = editorName;
+              q.explanation_last_edited_at = dateStr;
+            }
+            if (!questionExtrasMap[qId]) questionExtrasMap[qId] = {};
+            questionExtrasMap[qId].explanation = newExpl;
+            questionExtrasMap[qId].explanation_last_edited_by = editorName;
+            questionExtrasMap[qId].explanation_last_edited_at = dateStr;
+
+            saveQuestionExtrasToStorage();
+            pushQuestionExtraToCloud(qId);
+            delete explanationEditingState[qId];
+            renderSingleCard(qId);
+          }
+          return;
         }
       });
 
@@ -2127,12 +2488,6 @@
       // 版本控制時間軸：管理員權限控管與折疊控制
       // 僅限 renart.00001@gmail.com 登入後可展開查閱
       // ==========================================
-      const ADMIN_EMAIL = 'renart.00001@gmail.com';
-
-      function isCurrentUserAdmin() {
-        return Boolean(currentUser && (currentUser.email || '').toLowerCase() === ADMIN_EMAIL.toLowerCase());
-      }
-
       function updateTimelineAuthUI() {
         const toggleBtn = document.getElementById('timelineAuthToggleBtn');
         const lockIcon = document.getElementById('timelineLockIcon');
@@ -2206,6 +2561,7 @@
             if (userMenuName) userMenuName.textContent = user.displayName || '使用者';
             if (userMenuEmail) userMenuEmail.textContent = user.email || '';
             pullWrongQuestionsFromCloud(user);
+            pullQuestionExtrasFromCloud();
           } else {
             currentUser = null;
             if (googleLoginBtn) googleLoginBtn.classList.remove('hidden');
@@ -2213,15 +2569,18 @@
             updateSyncStatusUI('guest');
           }
           updateTimelineAuthUI();
+          renderAllQuestions();
         });
       }
 
       // 啟動初始化
       loadWrongQuestionsFromStorage();
+      loadQuestionExtrasFromStorage();
       initLawSessionCheckboxes();
       syncCheckboxesWithSelectedScopes();
       buildQuizQuestions(false);
       updateTimelineAuthUI();
+      pullQuestionExtrasFromCloud();
     })();
   </script>
 </body>
